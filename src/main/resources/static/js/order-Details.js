@@ -2,8 +2,15 @@ DOM={
     $orderDetailsContainer:$('#order-details-container'),// order-details 地址栏 容器
     $totalPrice: $('#total-price'),// order-details 订单总价 //JS 执行时机太早：你的 DOM.$totalPrice = $('#total-price')
     // 在 Thymeleaf 片段还没完成服务器端替换、客户端 DOM 还没渲染 时就执行了，此时 #total-price 还不存在；
+    $orderDataContainer:$('#order-data-container') ,//order-items 订单列数据容器
+    $totalPriceAll:$('#order-total-price-all'),// order-details 订单总价
+    $orderNo:$('#orderNo'),// order-details 订单编号
+    $orderDate:$('#orderDate'),// order-details 订单日期
+    $orderTotalPrice:$('#order-total-price'),// order-details 商品小计总价
+    $orderDelivery:$('#order-delivery-price'),// order-details 订单运费
+    $orderDiscount:$('#order-discount-price'),// order-details 订单优惠信息
+    $addressInfo:$('#address-info'),// order-details 收货地址信息
 
-    $orderDataContainer:$('#order-data-container') //order-items 订单列数据容器
 }
 //============ 1.从导航中获取orderId //TODO 可以它进行加密处理
 function getOrderIdFromUrl(){
@@ -91,10 +98,8 @@ async function loadOrderItem() {
                     <div class="name box">${item.name || '未命名商品'}</div>
                     <div class="price box">${item.price}</div>
                     <div class="quantitly box">
-                        <div class="quantity buttons_added" data-value="${item.productId}">
-                            <input type="button" value="-" class="minus" disabled> <!-- 订单详情建议禁用修改 -->
+                        <div class="quantity buttons_added" data-value="${item.productId}">       
                             <input type="number" step="1" min="1" value="${item.quantity}" class="input-text qty text" disabled>
-                            <input type="button" value="+" class="plus" disabled>
                         </div>
                     </div>
                     <div class="total box">${totalPrice}元</div>
@@ -125,18 +130,54 @@ async function loadOrderItem() {
 //=========== 5.异步渲染数据 order-details 订单总价 和地址栏
 async function loadOrderDetails(){
     const id = getOrderIdFromUrl();
-    // try {
-    //     if(!id){
-    //
-    //     }
-    // }
-
-    const data = await getOrderDetails(id);
-    console.log(data);
-    console.log('totalPrice',DOM.$totalPriceAll);
-
-
-
+    try {
+        const data = await getOrderDetails(id);
+        console.log(data);
+        DOM.$orderNo.html('订单号:'+data.orderNo); // 订单编号
+        var orderDate = new Date(data.createdTime);
+        orderDate = Dateformat(orderDate);
+        DOM.$orderDate.html('下单时间:'+orderDate);//下单时间
+        DOM.$orderTotalPrice.html("¥"+ Number(data.subtotal).toFixed(2)+"元");
+        DOM.$orderDelivery.html("¥"+Number(data.shippingFee).toFixed(2)+"元");//运费
+        DOM.$orderDiscount.html("¥"+Number(data.discount).toFixed(2)+"元"); //折扣
+        DOM.$totalPriceAll.html("¥"+Number(data.totalAmount).toFixed(2)+"元");
+        console.log('totalPrice',DOM.$totalPriceAll);
+        
+        //======开始渲染地址栏数据
+        
+        // 构建地址HTML，保持与HTML示例相同的格式
+        let addressHtml = `
+            <p><span>${data.recipient|| '未填写'}</span></p>
+            <P><span>联系电话:</span>${data.phone}</P>
+            <p><span>省份:</span> ${data.province || '未填写'}</p>
+            <p><span>城市:</span> ${data.city || '未填写'}</p>
+            <p><span>区/县</span>${data.district||'未填写'}</p>
+            <p><span>详细地址:</span> ${data.detail || '未填写'}</p>
+            <p><span>邮政编号:</span> ${data.zipCode|| '未填写'}</p>
+        `;
+        
+        // 将构建好的HTML设置到地址容器中
+        DOM.$addressInfo.html(addressHtml);
+        
+    } catch (error) {
+        console.error("加载订单详情失败：", error.message);
+        // 显示错误信息
+        DOM.$orderNo.html('加载失败');
+        DOM.$orderDate.html('');
+        DOM.$orderTotalPrice.html('¥0.00元');
+        DOM.$orderDelivery.html('¥0.00元');
+        DOM.$orderDiscount.html('¥0.00元');
+        DOM.$totalPriceAll.html('¥0.00元');
+        DOM.$addressInfo.html('<p><span>加载地址信息失败</span></p>');
+    }
+}
+function  Dateformat(date){
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes= date.getMinutes().toString().padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 $(document).ready(() => {
         loadOrderItem();
