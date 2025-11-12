@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>GreenMart | Grocery Store</title>
+
+    <!-- Font-Awesome (CSS) -->
+    <link rel="stylesheet" href="./assets/vendors/font-awesome/css/all.min.css" />
+
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <link rel="stylesheet" href="./assets/css/responsive.css" />
+
+</head>
+<body>
+
+    <!-------------------- Scroll-Top Area (Start) -------------------->
+    <a href="#home" class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    <!-------------------- Scroll-Top Area (End) -------------------->
+
+
+
+    <!-------------------- Header Area (Start) -------------------->
+    <header class="header">
+
+        <!----- Header-1 Area (Start) ----->
+        <div class="header-1">
+
+            <!-- Logo -->
+            <a class="logo" href="./index.html">
+                <i class="fas fa-leaf"></i>
+                <h2><span>Green</span>Mart</h2>
+                <!-- <img src="assets/images/logo.jpg" alt="logo" /> -->
+            </a>
+
+            <!-- Search Form -->
+            <form class="form-container">
+                <input type="search" placeholder="search products" id="search" /> 
+                <label for="search" class="fas fa-search"></label>
+            </form>
+
+            <!-- Icons -->
+            <div class="icon-container">
+                <div id="search-btn" class="icon fas fa-search"></div> 
+                <a href="./Login.html" id="login" class="icon fas fa-user"></a> 
+                <a href="./Wishlist.html" id="wishlist" class="icon fas fa-heart"></a>
+                <a href="./Cart.html" id="cart" class="icon fas fa-shopping-cart"></a> 
+            </div>
+        
+        </div>
+        <!----- Header-1 Area (Ends) ----->
+
+
+        
+        <!----- Header-2 Area (Start) ----->
+        <div class="header-2">
+
+            <!-- Categories -->
+            <div class="category-dropdown">
+                <button>categories <i class="fas fa-angle-down"></i> </button>
+                <div class="category-content">
+                    <a href="./Shop Grid.html">fruits</a>
+                    <a href="./Shop Grid.html">vegetables</a>
+                    <a href="./Shop Grid.html">drinks</a>
+                    <a href="./Shop Grid.html">bakery</a>
+                    <a href="./Shop Grid.html">fresh meat</a>
+                    <a href="./Shop Grid.html">dry fruits</a>
+                    <a href="./Shop Grid.html">dairy</a>
+                </div>
+            </div>
+
+            <!-- Navbar -->
+            <nav class="navbar">
+
+                <a class="nav-btn" href="./index.html">home</a>
+                <div class="dropdown-menu">
+                    <button class="nav-btn">pages <i class="fas fa-angle-down"></i> </button>
+                    <div class="dropdown-content">
+                        <a href="./about.html">about us</a>
+                        <a href="./Faqs.html">faqs</a>
+                        <a href="./Wishlist.html">wishlist</a>
+                        <a href="./Checkout.html">checkout</a>
+                        <a href="./Cart.html">carts</a>
+                        <a href="./Order List.html">order list</a>
+                        <a href="./Order Details.html">order details</a>
+                    </div>
+                </div>
+                <div class="dropdown-menu">
+                    <button class="nav-btn">blog <i class="fas fa-angle-down"></i> </button>
+                    <div class="dropdown-content">
+                        <a href="./Blog Grid.html">blogs grid</a>
+                        <a href="./Blog List.html">blogs list</a>
+                        <a href="./Blog Details.html">blog details</a>
+                    </div>
+                </div>
+                <div class="dropdown-menu">
+                    <button class="nav-btn">shop <i class="fas fa-angle-down"></i> </button>
+                    <div class="dropdown-content">
+                        <a href="./Shop Grid.html">shop grid</a>
+                        <a href="./Shop List.html">shop list</a>
+                        <a href="./Product Details.html">product details</a>
+                    </div>
+                </div>           
+                <div class="dropdown-menu">
+                    <button class="nav-btn">account <i class="fas fa-angle-down"></i> </button>
+                    <div class="dropdown-content">
+                        <a href="./Login.html">login</a>
+                        <a href="./Register.html">register</a>
+                        <a href="./Change Password.html">change password</a>
+                        <a href="./Reset Password.html">reset password</a>
+                        <a href="./Dashboard.html">dashboard</a>
+                        <a href="./Edit Profile.html">edit profile</a>
+                        <a href="./Edit Address.html">edit address</a>
+                    </div>
+                </div>
+                <a class="nav-btn" href="./contact.html">contact</a>
+            </nav> 
+            
+            <div id="menu-btn" class="icon fas fa-bars"></div> 
+
+        </div>
+        <!----- Header-2 Area (Ends) ----->
+
+
+
+        <!----- Mobile Menu Area (Start) ----->
+        <div class="mobile-menu">
+
+            <div id="close-side-bar" class="fas fa-times"></div>
+        
+            <nav class="mobile-navbar">
+
+                <div class="nav-link">
+                    <a class="nav-btn" href="./index.html">home</a>
+                </div>    
+
+                <div class="nav-link">
+                    <div class="main-nav-link">
+                        <button class="nav-btn"><span>pages</span> <i class="fas fa-plus"></i> </button>
+                    </div>
+                    <p class="sub-nav-link">
+                        <a href="./about.html">about us</a>
+                        <a href="./Faqs.html">faqs</a>
+                        <a href="./Wishlist.html">wishlist</a>
+                        <a href="./Checkout.html">checkout</a>
+                        <a href="./Cart.html">carts</a>
+                        <a href="./Order List.html">order list</a>
+                        <a href="./Order Details.html">order details</a>
+                    </p>
+                </div>
+
+                <div class="nav-link">
+                    <div class="main-nav-link">
+                        <button class="nav-btn"><span>blog</span> <i class="fas fa-plus"></i> </button>
+                    </div>
+                    <p class="sub-nav-link">
+                        <a href="./Blog Grid.html">blogs grid</a>
+                        <a href="./Blog List.html">blogs list</a>
+                        <a href="./Blog Details.html">blog details</a>
+                    </p>
+                </div>
+
+                <div class="nav-link">
+                    <div class="main-nav-link">
+                        <button class="nav-btn"><span>shop</span> <i class="fas fa-plus"></i> </button>
+                    </div>
+                    <p class="sub-nav-link">
+                        <a href="./Shop Grid.html">shop grid</a>
+                        <a href="./Shop List.html">shop list</a>
+                        <a href="./Product Details.html">product details</a>
+                    </p>
+                </div>
+
+                <div class="nav-link">
+                    <div class="main-nav-link">
+                        <button class="nav-btn"><span>account</span> <i class="fas fa-plus"></i> </button>
+                    </div>
+                    <p class="sub-nav-link">
+                        <a href="./Login.html">login</a>
+                        <a href="./Register.html">register</a>
+                        <a href="./Change Password.html">change password</a>
+                        <a href="./Reset Password.html">reset password</a>
+                        <a href="./Dashboard.html">dashboard</a>
+                        <a href="./Edit Profile.html">edit profile</a>
+                        <a href="./Edit Address.html">edit address</a>
+                    </p>
+                </div>
+
+                <div class="nav-link">
+                    <a class="nav-btn" href="./contact.html">contact</a>
+                </div>  
+
+            </nav>
+        
+        </div>
+        <!----- Mobile Menu Area (Ends) ----->
+
+    </header>
+
+    <!-------------------- Header Area (End) -------------------->
+
+
+    
+    <!-------------------- Page-Title (Start) -------------------->
+    <div class="page-title">
+        <h2>edit profile</h2>
+        <p><a href="./index.html">home</a> <i class="fas fa-long-arrow-alt-right"></i> <span>edit profile</span></p> 
+    </div>
+    <!-------------------- Page-Title (End) -------------------->
+    
+
+     
+    <!-------------------- Edit Profile (Start) --------------------> 
+    <section class="edit-profile">
+
+        <form class="form" action="">
+            <h3>edit profile</h3>
+            <input type="text" name="" placeholder="full name" id="" class="box" />
+            <input type="email" name="" placeholder="email address" id="" class="box" />
+            <input type="text" name="" placeholder="phone number" id="" class="box" />
+            <input type="file" name="" id="" accept="image/*" class="box" placeholder="phone number">
+            <input type="submit" value="edit profile" class="btn" />
+        </form>
+    
+    </section>
+    <!-------------------- Edit Profile (End) -------------------->
+
+
+    
+     <!-------------------- Footer Area (Start) -------------------->
+     <footer class="footer">
+
+        <div class="box-container">
+
+            <div class="footer-item">
+                <a class="logo" href="./index.html">
+                    <i class="fas fa-leaf"></i>
+                    <h2><span>Green</span>Mart</h2>
+                </a>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                    Architecto ad quae nisi! Atque harum, asperiores est 
+                    reiciendis laboriosam exercitationem.</p>
+            </div>
+
+            <div class="footer-item">
+                <h2>contact info</h2>
+                <div class="info">
+                    <p><i class="fas fa-phone"></i><span>+111-222-333</span></p>
+                    <p><i class="fas fa-envelope"></i><span class="gmail">abc@gmail.com</span></p>
+                    <p><i class="fas fa-map-marker-alt"></i><span>karachi, pakistan</span></p>
+                </div>
+                <div class="social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-item">
+                <h2>quick links</h2>
+                <div class="info">
+                    <a href="./about.html"><i class="fas fa-arrow-right"></i>about us</a>
+                    <a href="./contact.html"><i class="fas fa-arrow-right"></i>contact us</a>
+                    <a href="./Login.html"><i class="fas fa-arrow-right"></i>login</a>
+                    <a href="./Register.html"><i class="fas fa-arrow-right"></i>register</a>
+                    <a href="./Faqs.html"><i class="fas fa-arrow-right"></i>faq</a>
+                    <a href="./Dashboard.html"><i class="fas fa-arrow-right"></i>dashboard</a>
+                    <a href="./Order List.html"><i class="fas fa-arrow-right"></i>order list</a>
+                </div>
+            </div>
+
+            <div class="footer-item">
+                <h2>Newsletter</h2>
+                <p>Be the first to know about our latest products and exclusive offers by subscribing to our newsletter.</p> <!-- Newsletter Description -->
+                <form class="dark-form" method="post" id="newsletter-form-2">
+                    <div class="input-field">
+                        <label for="news-email-2" class="fas fa-envelope"></label>
+                        <input type="email" id="news-email-2" name="email" class="box" placeholder="Your email address" required>
+                    </div>
+                    <button type="submit" class="btn" name="submit" id="submit-2">Subscribe</button>
+                    <span class="alert" id="msg-2"></span>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="content">
+            <p>&copy; 2025 All rights reserved. <a target="_blank" href="https://www.mobanwang.com/" title="网站模板" class="text-white">网站模板</a></p>
+        </div>
+    </footer>
+
+    <!-------------------- Footer Area (End) -------------------->
+
+
+
+    <!-- Jquery -->
+    <script src="./assets/vendors/jquery/jquery.min.js"></script>
+
+    <!-- Custom Script Files -->
+    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/nav-link-toggler.js"></script>
+    <script src="./assets/js/newsletter.js"></script>
+
+</body>
+</html>

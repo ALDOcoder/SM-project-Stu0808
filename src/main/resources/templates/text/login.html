@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<section class="login">
+    <form class="login-form" action="/user/login/login" method="post">
+        <h3>L绿色集市登录</h3>
+
+        <!-- 手机号输入框（优化为tel类型，适配移动端） -->
+        <input type="tel" name="phone" placeholder="请输入你的电话号码" class="input-box" required>
+
+        <!-- 密码/验证码输入框（动态切换） -->
+        <input type="password" name="password" id="password-or-code" placeholder="请输入你的密码" class="input-box" required>
+
+        <div class="form-row">
+            <!-- 记住我 -->
+            <label class="remember-label">
+                <input type="checkbox" name="remember">
+                <span>记住我</span>
+            </label>
+
+            <!-- 切换登录方式 + 忘记密码/发送验证码 -->
+            <div class="link-group">
+                <!-- 验证码登录（切换按钮） -->
+                <a href="javascript:void(0)" class="toggle-link" id="toggle-code-login">验证码登录</a>
+
+                <!-- 忘记密码/发送验证码（动态切换） -->
+                <a href="/user/rooter/resetPassword" class="toggle-link" id="toggle-forgot" style="margin-left: 10px;">忘记密码?</a>
+            </div>
+        </div>
+
+        <button type="submit" class="submit-btn">登录</button>
+
+        <p class="register-tip">
+            没有账号? <a href="/user/rooter/register" class="link">注册</a>
+        </p>
+    </form>
+
+    <!-- 交互逻辑 + 样式 -->
+    <style>
+        .login {
+            max-width: 420px;
+            margin: 60px auto;
+            padding: 30px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .login-form h3 {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 24px;
+        }
+        .input-box {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .input-box:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 6px rgba(76,175,80,0.2);
+        }
+        .form-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 12px 0;
+        }
+        .remember-label {
+            cursor: pointer;
+            color: #666;
+            font-size: 14px;
+        }
+        .remember-label input {
+            margin-right: 6px;
+        }
+        .link-group {
+            display: flex;
+            gap: 16px;
+        }
+        .toggle-link {
+            color: #4CAF50;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+        .toggle-link:hover {
+            color: #45a049;
+            text-decoration: underline;
+        }
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .submit-btn:hover {
+            background: #45a049;
+        }
+        .register-tip {
+            text-align: center;
+            margin-top: 16px;
+            color: #999;
+            font-size: 14px;
+        }
+        .register-tip .link {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        .register-tip .link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleCodeLink = document.getElementById('toggle-code-login');
+            const inputEl = document.getElementById('password-or-code');
+            const toggleForgotLink = document.getElementById('toggle-forgot');
+            let isCodeMode = false; // 标记：是否为验证码模式
+
+            // 切换登录方式的核心逻辑
+            toggleCodeLink?.addEventListener('click', (e) => {
+                e.preventDefault();
+                isCodeMode = !isCodeMode;
+
+                if (isCodeMode) {
+                    // 切换为【验证码登录】模式
+                    inputEl.name = 'code';
+                    inputEl.placeholder = '请输入验证码';
+                    toggleForgotLink.textContent = '发送验证码';
+                    toggleForgotLink.href = 'javascript:void(0)'; // 阻止跳转，准备绑定发送逻辑
+                } else {
+                    // 切换回【密码登录】模式
+                    inputEl.name = 'password';
+                    inputEl.placeholder = '请输入你的密码';
+                    toggleForgotLink.textContent = '忘记密码?';
+                    toggleForgotLink.href = '/user/rooter/resetPassword'; // 恢复原链接
+                }
+            });
+
+            // 发送验证码的逻辑（仅前端模拟，实际需调用后端接口）
+            toggleForgotLink?.addEventListener('click', (e) => {
+                if (isCodeMode) {
+                    e.preventDefault();
+                    const phone = document.querySelector('input[name="phone"]').value.trim();
+                    if (!phone) {
+                        alert('请先输入手机号码');
+                        return;
+                    }
+                    // TODO：调用后端接口发送验证码（示例伪代码）
+                    alert(`验证码已发送至 ${phone}（5分钟内有效）`);
+                }
+            });
+        });
+    </script>
+</section>
+</body>
+</html>

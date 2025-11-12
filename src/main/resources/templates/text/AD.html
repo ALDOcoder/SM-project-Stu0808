@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>收货地址 - 绿色集市</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --green: #28a745;
+            --green-dark: #218838;
+            --black: #333;
+            --white: #ffffff;
+            --light-bg: #f8f9fa;
+            --border: #e5e7eb;
+            --text: #333;
+            --text-light: #717171;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+
+        .heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8fff9, #e8f5e9);
+            margin-bottom: 2rem;
+        }
+
+        .heading h2 {
+            border-left: 0.5rem solid var(--green);
+            padding: 0.5rem 1rem;
+            font-size: 2.2rem;
+            color: var(--black);
+            margin: 0;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 1rem 2rem;
+            color: var(--white);
+            background-color: var(--green);
+            font-size: 1.4rem;
+            letter-spacing: 0.1rem;
+            text-decoration: none;
+            border: none;
+            border-radius: 6px;
+            transition: 0.5s;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--black);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .content {
+            padding: 0 25px 25px;
+        }
+
+        .address-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .address-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .address-card:hover {
+            border-color: var(--green);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .address-card.default {
+            border: 2px solid var(--green);
+            background-color: rgba(40, 167, 69, 0.05);
+        }
+
+        .address-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .address-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--black);
+        }
+
+        .default-badge {
+            background: var(--green);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .address-details {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .address-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.3s;
+        }
+
+        .action-btn:hover {
+            color: var(--green);
+        }
+
+        .edit-btn:hover {
+            color: #007bff;
+        }
+
+        .delete-btn:hover {
+            color: #dc3545;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-light);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: #ddd;
+        }
+
+        .empty-state p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .heading {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+
+            .heading h2 {
+                border-left: none;
+                border-bottom: 0.3rem solid var(--green);
+                padding-bottom: 0.5rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .address-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .address-actions {
+                justify-content: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="heading">
+        <h2>收货地址</h2>
+        <button class="btn">
+            <i class="fas fa-plus"></i> 添加地址
+        </button>
+    </div>
+
+    <div class="content">
+        <div class="address-list">
+
+            <div class="address-card default">
+                <div class="address-header">
+                    <div class="address-title">默认地址</div>
+                    <span class="default-badge">默认</span>
+                </div>
+                <div class="address-details">
+                    <p>张三</p>
+                    <p>13800138000</p>
+                    <p>北京市海淀区中关村大街1号</p>
+                    <p>100000</p>
+                </div>
+                <div class="address-actions">
+                    <button class="action-btn edit-btn">
+                        <i class="fas fa-edit"></i> 编辑
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-check-circle"></i> 选择
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="address-card">
+                <div class="address-header">
+                    <div class="address-title">家庭地址</div>
+                </div>
+                <div class="address-details">
+                    <p>张三</p>
+                    <p>13800138000</p>
+                    <p>上海市浦东新区张江高科技园区</p>
+                    <p>201203</p>
+                </div>
+                <div class="address-actions">
+                    <button class="action-btn edit-btn">
+                        <i class="fas fa-edit"></i> 编辑
+                    </button>
+                    <button class="action-btn delete-btn">
+                        <i class="fas fa-trash"></i> 删除
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-check-circle"></i> 选择
+                    </button>
+                </div>
+            </div>
+
+            <div class="address-card">
+                <div class="address-header">
+                    <div class="address-title">公司地址</div>
+                </div>
+                <div class="address-details">
+                    <p>张三</p>
+                    <p>13800138000</p>
+                    <p>深圳市南山区科技园科技南路</p>
+                    <p>518000</p>
+                </div>
+                <div class="address-actions">
+                    <button class="action-btn edit-btn">
+                        <i class="fas fa-edit"></i> 编辑
+                    </button>
+                    <button class="action-btn delete-btn">
+                        <i class="fas fa-trash"></i> 删除
+                    </button>
+                    <button class="action-btn">
+                        <i class="fas fa-check-circle"></i> 选择
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

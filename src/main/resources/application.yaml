@@ -1,0 +1,35 @@
+server:
+  port: 8090
+
+spring:
+  profiles:
+    active: dev
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  datasource:
+    driver-class-name: ${zhoulin.datasource.driver-class-name}
+    url: jdbc:mysql://${zhoulin.datasource.host}:${zhoulin.datasource.port}/${zhoulin.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${zhoulin.datasource.username}
+    password: ${zhoulin.datasource.password}
+  thymeleaf:
+      prefix: classpath:/templates/
+      suffix: .html
+      servlet:
+        content-type: text/html
+
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  type-aliases-package: com.zhoulin.pojo
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    com:
+     zhoulin:
+      mapper: debug
+      service: info
+      controller: info

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>XMLHttpRequest 携带Token示例</title>
+    <style>
+        /* 简单样式，方便查看结果 */
+        .container {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+        }
+        button {
+            padding: 8px 16px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        #result {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed #ccc;
+            min-height: 50px;
+            white-space: pre-wrap; /* 保留换行，方便查看JSON结果 */
+        }
+        .error {
+            color: #dc3545;
+        }
+        .success {
+            color: #28a745;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h3>XMLHttpRequest 携带Token请求测试</h3>
+    <!-- 触发请求的按钮 -->
+    <button id="sendRequestBtn">发送带Token的请求</button>
+    <!-- 显示请求状态和结果 -->
+    <div id="result">点击按钮开始请求...</div>
+</div>
+
+<script>
+    // 1. 模拟实际场景：从本地存储（localStorage）获取Token
+    // （实际开发中，Token通常是登录后后端返回并存储的，此处仅模拟）
+    const userToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // 替换为你的真实Token
+    localStorage.setItem("authToken", userToken); // 存入本地存储
+
+
+    // 2. 核心：携带Token发送请求的函数
+    function sendRequestWithToken() {
+        const resultDom = document.getElementById("result");
+        const token = localStorage.getItem("authToken"); // 从本地存储读取Token
+        const apiUrl = "https://www.baidu.com"; // 替换为你的实际接口地址
+
+        // 2.1 创建XMLHttpRequest实例
+        const xhr = new XMLHttpRequest();
+
+        // 2.2 初始化请求：请求方式（POST）、接口地址、异步（true）
+        // 用POST更贴近实际开发（需传数据），若为GET则无需send时传body
+        xhr.open("POST", apiUrl, true);
+
+        // 2.3 关键：设置请求头（必须在open之后、send之前设置）
+        xhr.setRequestHeader("Authorization", `Bearer ${token}`); // 携带Token（Bearer格式）
+        xhr.setRequestHeader("Content-Type", "application/json"); // 告诉后端请求体是JSON格式
+
+        // 2.4 监听请求状态变化（处理成功/失败）
+        xhr.onload = function () {
+            // 状态码 200-299 表示请求成功
+            if (xhr.status >= 200 && xhr.status < 300) {
+                try {
+                    // 解析后端返回的JSON数据
+                    const responseData = JSON.parse(xhr.responseText);
+                    resultDom.className = "success";
+                    resultDom.textContent = `请求成功！\n后端返回数据：\n${JSON.stringify(responseData, null, 2)}`;
+                } catch (e) {
+                    resultDom.className = "error";
+                    resultDom.textContent = `请求成功，但解析响应失败：${e.message}`;
+                }
+            } else {
+                // 非成功状态码（如401未授权、404接口不存在）
+                resultDom.className = "error";
+                resultDom.textContent = `请求失败！\n状态码：${xhr.status}\n后端提示：${xhr.responseText}`;
+            }
+        };
+
+        // 2.5 监听网络错误（如断网、跨域未配置）
+        xhr.onerror = function () {
+            resultDom.className = "error";
+            resultDom.textContent = "网络错误！请检查网络连接或跨域配置。";
+        };
+
+        // 2.6 监听请求超时（避免无限等待）
+        xhr.timeout = 5000; // 超时时间：5秒
+        xhr.ontimeout = function () {
+            resultDom.className = "error";
+            resultDom.textContent = "请求超时！请稍后重试。";
+        };
+
+        // 2.7 准备请求体（POST请求需传的数据，根据接口要求调整）
+        const requestBody = JSON.stringify({
+            username: "testUser",
+            action: "getProfile"
+        });
+
+        // 2.8 发送请求（POST需传请求体，GET则传null或省略）
+        xhr.send(requestBody);
+    }
+
+    // 3. 绑定按钮点击事件：点击触发请求
+    document.getElementById("sendRequestBtn").addEventListener("click", sendRequestWithToken);
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .container {
+            border: 1px solid #ddd;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: inline-block;
+            width: 70px;
+        }
+
+        input {
+            width: 300px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button[type="button"] {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        /* 错误提示样式 */
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875em;
+            margin-top: 5px;
+            margin-left: 73px; /* 与label对齐 */
+            height: 20px; /* 保持布局稳定 */
+        }
+
+        /* 错误状态样式 */
+        .invalid {
+            border-color: #dc3545 !important;
+        }
+
+        /* 成功状态样式 */
+        .valid {
+            border-color: #28a745 !important;
+        }
+        .textContain{
+            text-align: center;
+        }
+        #tourist{
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1 class="textContain">汽车销售管理系统</h1>
+    <form id="loginForm" action="/user/login/login" method="post">
+        <div>
+            <label for="id">账号</label>
+            <input type="text" id="id" name="id" placeholder="请输入账号">
+            <div class="error-message" id="idError"></div>
+        </div>
+        <div>
+            <label for="password">密码</label>
+            <input type="password" id="password" name="password" placeholder="请输入密码">
+            <div class="error-message" id="passwordError"></div>
+        </div>
+        <button type="submit">登录</button>
+        <button type="button" onclick="inlogin()">注册</button>
+        <button id="tourist">以游客身份登录</button>
+    </form>
+</div>
+<!-- 通过 CDN 引入（推荐开发环境） -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+<script th:src="@{/js/userlogin.js}"></script>
+</body>
+</html>

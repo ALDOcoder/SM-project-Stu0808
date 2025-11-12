@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhoulin.mapper.CartMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zhoulin.pojo.entity.Cart">
+        <id column="id" property="id" />
+        <result column="user_id" property="userId" />
+        <result column="product_id" property="productId" />
+        <result column="quantity" property="quantity" />
+        <result column="price" property="price" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_at" property="updatedTime" />
+        <result column="is_deleted" property="isDeleted" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, user_id, product_id, quantity, price, created_time, updated_time, is_deleted
+    </sql>
+    <!-- 查询购物车 -->
+    <select id="queryCarted" resultType="com.zhoulin.pojo.vo.CartVO" parameterType="java.lang.Long">
+        SELECT
+            c.id id,
+            p.photo photo,
+            p.id product_id,
+            p.`name` product_name,
+            ca.`name` category_Name,
+            c.quantity quantity,
+            c.price price
+        FROM cart c  -- 主表：购物车表
+                 INNER JOIN products p  -- 关联商品表（内连接：只保留购物车中存在的商品）
+                            ON c.product_id = p.id  -- 关联条件：购物车商品ID = 商品表ID
+                 LEFT JOIN category ca  -- 关联分类表（左连接：即使商品没有分类，也保留该商品记录）
+                           ON p.category_id = ca.id  -- 关联条件：商品分类ID = 分类表ID
+        WHERE c.is_deleted = 0  -- 筛选条件：未删除的购物车项
+        AND  c.user_id = #{userId};  -- 筛选条件：只查用户10086的购物车
+    </select>
+
+</mapper>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        /* 新增：发送验证码时的禁用状态（若需要） */
+        #forgot-action.disabled {
+            color: #999;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<section class="login">
+    <form class="form" action="/user/login/login" method="post">
+        <h3>L绿色集市登录</h3>
+        <input type="text" name="phone" placeholder="请输入你的电话号码" class="box">
+
+        <!-- 1. 给密码框加 ID → 用于动态切换 -->
+        <input type="password" name="password" id="password-or-code" placeholder="请输入你的密码" class="box">
+
+        <div class="info">
+            <div class="remember">
+                <input type="checkbox" name="" id="remember-me">
+                <label for="remember-me"> 记&nbsp;住&nbsp;我 </label>
+            </div>
+            <div class="forgot">
+                <!-- 2. 给“验证码登录”加 ID + 阻止默认跳转 → 用于触发切换 -->
+                <a class="link" href="javascript:void(0)" id="toggle-code">验证码登录</a>
+
+                <!-- 3. 给“忘记密码”加 ID → 用于动态切换文字和行为 -->
+                <a class="link" href="/user/rooter/resetPasswordl" id="forgot-action" style="margin-left: 10px;">忘记密码?</a>
+            </div>
+        </div>
+        <input type="submit" value="登录" class="btn" />
+        <p>没有账号? <a class="link" href="/user/rooter/register">注册</a></p>
+    </form>
+</section>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleCodeLink = document.getElementById('toggle-code');
+        const inputEl = document.getElementById('password-or-code');
+        const forgotLink = document.getElementById('forgot-action');
+        let isCodeMode = false; // 标记：是否为验证码模式
+
+        // 1. 切换登录方式（密码 ↔ 验证码）
+        toggleCodeLink.addEventListener('click', function(e) {
+            e.preventDefault(); // 阻止默认跳转（因href已设为javascript:void(0)，此步可选但更严谨）
+            isCodeMode = !isCodeMode;
+
+            if (isCodeMode) {
+                // 切换为【验证码模式】
+                inputEl.name = 'code';          // 参数名从 password → code
+                inputEl.placeholder = '请输入验证码'; // 提示文案变化
+                forgotLink.textContent = '发送验证码'; // 文字从“忘记密码”→“发送验证码”
+                forgotLink.href = 'javascript:void(0)'; // 阻止跳转，准备绑定发送逻辑
+            } else {
+                // 切换回【密码模式】
+                inputEl.name = 'password';      // 参数名恢复
+                inputEl.placeholder = '请输入你的密码'; // 提示文案恢复
+                forgotLink.textContent = '忘记密码?';   // 文字恢复
+                forgotLink.href = '/user/rooter/resetPasswordl'; // 链接恢复
+                forgotLink.classList.remove('disabled'); // 移除禁用样式（若之前添加过）
+            }
+        });
+
+        // 2. 发送验证码逻辑（前端模拟，实际需调用后端接口）
+        forgotLink.addEventListener('click', function(e) {
+            if (isCodeMode) { // 仅在验证码模式下触发
+                e.preventDefault(); // 阻止默认跳转
+                const phone = document.querySelector('input[name="phone"]').value.trim();
+
+                // 简单校验：手机号非空
+                if (!phone) {
+                    alert('请先输入手机号码');
+                    return;
+                }
+
+                // TODO：调用后端接口发送验证码（示例伪代码）
+                alert(`验证码已发送至 ${phone}（5分钟内有效）`);
+
+                // 可选：添加60秒倒计时（增强体验）
+                forgotLink.classList.add('disabled'); // 标记为禁用
+                let count = 60;
+                const timer = setInterval(() => {
+                    forgotLink.textContent = `${count--}秒后重发`;
+                    if (count < 0) {
+                        clearInterval(timer);
+                        forgotLink.textContent = '发送验证码';
+                        forgotLink.classList.remove('disabled');
+                    }
+                }, 1000);
+            }
+        });
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+/* Order List page enhancements */
+
+/* 搜索区域容器：网格布局，自适应列 */
+.order-list .search-order {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(22rem, 1fr));
+  gap: 1rem;
+  align-items: center;
+  background-color: var(--white);
+  padding: 1.5rem 2rem;
+  border-radius: .6rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.08);
+  margin: 1rem 0 2rem;
+}
+
+/* 单个字段：图标+输入/选择 */
+.order-list .search-order .input-field {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* 文字左对齐 */
+  gap: .8rem;
+  border: 0.1rem solid #ddd;
+  border-radius: .5rem;
+  padding: .8rem 1rem;
+  background-color: #fafafa;
+  min-height: 3.6rem;
+}
+
+.order-list .search-order .input-field label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  color: var(--green);
+}
+
+.order-list .search-order .box {
+  width: 100%;
+  font-size: 1.5rem;
+  color: var(--grey);
+  background: transparent;
+  border: none;
+  outline: none;
+  text-transform: none;
+  text-align: left; /* 强制左对齐，覆盖其他样式 */
+}
+
+.order-list .search-order .box::-webkit-input-placeholder,
+.order-list .search-order .box::placeholder {
+  color: #aaa;
+  text-align: left; /* 占位符左对齐 */
+}
+
+.order-list .search-order .input-field:focus-within {
+  border-color: var(--green);
+  background-color: #fff;
+}
+
+/* 操作按钮：与筛选条件同一行，按钮彼此紧邻 */
+.order-list .search-order .actions {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: .6rem;
+}
+
+.order-list .search-order .actions .btn {
+  min-width: 9rem;
+  height: 3.6rem;
+  line-height: 3.6rem;
+  padding: 0 1.4rem;
+}
+
+.order-list .search-order .actions .btn.outline {
+  color: var(--green);
+  background: transparent;
+  border: 0.1rem solid var(--green);
+}
+
+.order-list .search-order .actions .btn.outline:hover {
+  color: var(--white);
+  background: var(--green);
+}
+
+/* 分页区域 */
+.order-list .order-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* 居中显示 */
+  text-align: center; /* 文本居中，保证按钮文字完整显示 */
+  gap: 1.4rem;
+  background-color: var(--white);
+  padding: 1.2rem 1.6rem;
+  border-radius: .6rem;
+  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.08);
+  margin: 2rem 0;
+}
+
+.order-list .order-pagination .btn {
+  min-width: 12rem; /* 增加按钮最小宽度，避免文字被裁切 */
+  height: 3.6rem;
+  line-height: 3.6rem;
+  padding: 0 2rem; /* 增加左右内边距，图标与文字不拥挤 */
+}
+
+/* 当前页显示 */
+.order-list .order-pagination #page-no {
+  width: 8rem;
+  height: 3.6rem;
+  text-align: center;
+  border: 0.1rem solid #ddd;
+  border-radius: .5rem;
+  color: var(--black);
+  background-color: #f6f6f6;
+  font-size: 1.5rem;
+}
+
+/* 响应式：窄屏时按钮与字段换行显示 */
+@media (max-width: 768px) {
+  .order-list .search-order {
+    grid-template-columns: 1fr;
+  }
+  .order-list .order-pagination {
+    flex-wrap: wrap; /* 宽度不足时换行仍居中 */
+  }
+  .order-list .order-pagination .btn {
+    min-width: 10rem;
+    padding: 0 1.6rem;
+  }
+}

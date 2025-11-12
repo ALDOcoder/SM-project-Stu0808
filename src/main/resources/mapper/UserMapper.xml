@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhoulin.mapper.UserMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zhoulin.pojo.entity.User">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="sex" property="sex" />
+        <result column="phone" property="phone" />
+        <result column="profile" property="profile" />
+        <result column="password" property="password" />
+        <result column="status" property="status" />
+        <result column="role_id" property="roleId" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="create_user" property="createUser" />
+        <result column="update_user" property="updateUser" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, sex, phone,profile ,password, status, role_id, create_time, update_time, create_user, update_user
+    </sql>
+
+    <select id="login" resultType="com.zhoulin.pojo.entity.User">
+        select   * from user
+        <where>
+            <if test="phone != null">
+                and phone = #{phone}
+            </if>
+            <if test=" password != null">
+                and password = #{password}
+            </if>
+         </where>
+    </select>
+
+    <select id="loginByCode" resultType="java.lang.Integer" >
+    select id from usercode where status = 1
+                <if test="phone != null">
+                    and phone = #{phone}
+                </if>
+                <if test="code != null">
+                    and code = #{code}
+                </if>
+    </select>
+
+
+    <insert id="createdUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (
+        username, sex, phone, profile,password,
+        status, role_id, create_time, update_time, create_user, update_user
+        ) values (
+        #{username}, #{sex}, #{phone}, #{profile},#{password},
+        #{status}, #{roleId}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser}
+        )
+    </insert>
+</mapper>

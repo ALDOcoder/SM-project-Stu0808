@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>绿色集市 - 订单结算</title>
+    <link rel="stylesheet" href="/assets/vendors/font-awesome/css/all.min.css" />
+    <style>
+        :root {
+            --primary: #4a6cf7;
+            --primary-dark: #3b5be3;
+            --grey: #717171;
+            --grey-light: #f5f5f5;
+            --white: #ffffff;
+            --border: #e5e7eb;
+            --error: #f44336;
+            --success: #4caf50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            padding: 20px;
+            color: #333;
+        }
+
+        .checkout{
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .checkout-item{
+            background-color: var(--white);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+        }
+
+        .checkout .box-1{
+            flex: 1 1 66rem;
+        }
+
+        .checkout .box-2{
+            flex: 1 1 33rem;
+        }
+
+        .heading {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .heading h2 {
+            text-transform: uppercase;
+            font-size: 1.2rem;
+            color: #2d3748;
+            letter-spacing: 0.5px;
+        }
+
+        .change-address-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .change-address-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /*----- 地址表单样式 -----*/
+        .address-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .form-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            font-size: 1rem;
+            color: var(--grey);
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+        }
+
+        .form-group.required label::after {
+            content: '*';
+            color: var(--error);
+            margin-left: 4px;
+        }
+
+        .same-as-billing {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+        }
+
+        .same-as-billing input {
+            margin-right: 10px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-align: center;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        /* 地址选择卡片样式 */
+        .address-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .address-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            width: calc(50% - 10px);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .address-card:hover {
+            border-color: var(--primary);
+        }
+
+        .address-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(74, 108, 247, 0.05);
+        }
+
+        .address-card h3 {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .address-card .default-badge {
+            background: var(--success);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .address-card p {
+            font-size: 0.9rem;
+            color: var(--grey);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .checkout {
+                flex-direction: column;
+            }
+
+            .address-card {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-------------------- Header Area (Start) -------------------->
+<header class="header">
+    <div class="header-1">
+        <a class="logo" href="/user/rooter/index" id="home">
+            <i class="fas fa-leaf"></i>
+            <h2><span>绿色</span>集市</h2>
+        </a>
+        <form class="form-container">
+            <input type="search" placeholder="搜索商品" id="search" />
+            <label for="search" class="fas fa-search"></label>
+        </form>
+        <div class="icon-container">
+            <div id="search-btn" class="icon fas fa-search"></div>
+            <a href="/user/login" id="login" class="icon fas fa-user"></a>
+            <a href="/user/rooter/Wishlist" id="wishlist" class="icon fas fa-heart"></a>
+            <a href="/user/rooter/Cart" id="cart" class="icon fas fa-shopping-cart"></a>
+        </div>
+    </div>
+
+    <div class="header-2">
+        <div class="category-dropdown">
+            <button>分类 <i class="fas fa-angle-down"></i> </button>
+            <div class="category-content">
+                <a href="/user/rooter/shop Grid">水果</a>
+                <a href="/user/rooter/shop Grid">蔬菜</a>
+                <a href="/user/rooter/shop Grid">饮料</a>
+                <a href="/user/rooter/shop Grid">烘焙</a>
+                <a href="/user/rooter/shop Grid">鲜肉</a>
+                <a href="/user/rooter/shop Grid">干果</a>
+                <a href="/user/rooter/shop Grid">乳制品</a>
+            </div>
+        </div>
+
+        <nav class="navbar">
+            <a class="nav-btn" href="/user/rooter/index">首页</a>
+            <div class="dropdown-menu">
+                <button class="nav-btn">页面 <i class="fas fa-angle-down"></i> </button>
+                <div class="dropdown-content">
+                    <a href="/user/rooter/about">关于我们</a>
+                    <a href="/user/rooter/faqs">常见问题</a>
+                    <a href="/user/rooter/Wishlist">收藏夹</a>
+                    <a href="/user/rooter/checkout">结算</a>
+                    <a href="/user/rooter/Cart">购物车</a>
+                    <a href="/user/rooter/order List">订单列表</a>
+                    <a href="/user/rooter/order Details">订单详情</a>
+                </div>
+            </div>
+            <div class="dropdown-menu">
+                <button class="nav-btn">博客 <i class="fas fa-angle-down"></i> </button>
+                <div class="dropdown-content">
+                    <a href="/user/rooter/Blog Grid">博客网格</a>
+                    <a href="/user/rooter/Blog List">博客列表</a>
+                    <a href="/user/rooter/Blog Details">博客详情</a>
+                </div>
+            </div>
+            <div class="dropdown-menu">
+                <button class="nav-btn">商店 <i class="fas fa-angle-down"></i> </button>
+                <div class="dropdown-content">
+                    <a href="/user/rooter/shop Grid">商店网格</a>
+                    <a href="/user/rooter/shop List">商店列表</a>
+                    <a href="/user/rooter/Product Details">商品详情</a>
+                </div>
+            </div>
+            <div class="dropdown-menu">
+                <button class="nav-btn">账户 <i class="fas fa-angle-down"></i> </button>
+                <div class="dropdown-content">
+                    <a href="/user/login">登录</a>
+                    <a href="/user/rooter/register">注册</a>
+                    <a href="/user/rooter/Change Password">修改密码</a>
+                    <a href="/user/rooter/Reset Password">重置密码</a>
+                    <a href="/user/rooter/dashboard">仪表板</a>
+                    <a href="/user/rooter/Edit Profile">编辑资料</a>
+                    <a href="/user/rooter/Edit Address">编辑地址</a>
+                </div>
+            </div>
+            <a class="nav-btn" href="/user/rooter/contact">联系我们</a>
+        </nav>
+
+        <div id="menu-btn" class="icon fas fa-bars"></div>
+    </div>
+</header>
+<!-------------------- Header Area (End) -------------------->
+
+<!-------------------- Page-Title (Start) -------------------->
+<div class="page-title">
+    <h2>订单结算</h2>
+    <p><a href="/user/rooter/index">主页</a> <i class="fas fa-long-arrow-alt-right"></i> <span>结算</span></p>
+</div>
+<!-------------------- Page-Title (End) -------------------->
+
+<section>
+    <div class="checkout">
+        <div class="box-1">
+            <!----- Billing-Address Area (Start) ----->
+            <div class="billing address checkout-item">
+                <div class="heading">
+                    <h2>账单地址</h2>
+                </div>
+
+                <form class="address-form">
+                    <div class="form-row">
+                        <div class="form-group required">
+                            <label for="billing-first-name">名字</label>
+                            <input type="text" id="billing-first-name" autocomplete="given-name" required>
+                        </div>
+                        <div class="form-group required">
+                            <label for="billing-last-name">姓氏</label>
+                            <input type="text" id="billing-last-name" autocomplete="family-name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="billing-company">公司名称 (可选)</label>
+                        <input type="text" id="billing-company" autocomplete="organization">
+                    </div>
+
+                    <div class="form-group required">
+                        <label for="billing-address">街道地址</label>
+                        <input type="text" id="billing-address" autocomplete="street-address" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group required">
+                            <label for="billing-province">省份</label>
+                            <select id="billing-province" required>
+                                <option value="">请选择省份</option>
+                                <option value="beijing">北京市</option>
+                                <option value="shanghai">上海市</option>
+                                <option value="guangdong">广东省</option>
+                                <option value="jiangsu">江苏省</option>
+                                <option value="zhejiang">浙江省</option>
+                            </select>
+                        </div>
+                        <div class="form-group required">
+                            <label for="billing-city">城市</label>
+                            <select id="billing-city" required>
+                                <option value="">请选择城市</option>
+                                <option value="beijing">北京市</option>
+                                <option value="shanghai">上海市</option>
+                                <option value="guangzhou">广州市</option>
+                                <option value="shenzhen">深圳市</option>
+                                <option value="hangzhou">杭州市</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group required">
+                            <label for="billing-district">区县</label>
+                            <select id="billing-district" required>
+                                <option value="">请选择区县</option>
+                                <option value="haidian">海淀区</option>
+                                <option value="chaoyang">朝阳区</option>
+                                <option value="pudong">浦东新区</option>
+                                <option value="tianhe">天河区</option>
+                                <option value="nanshan">南山区</option>
+                            </select>
+                        </div>
+                        <div class="form-group required">
+                            <label for="billing-postcode">邮政编码</label>
+                            <input type="text" id="billing-postcode" autocomplete="postal-code" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group required">
+                            <label for="billing-phone">电话号码</label>
+                            <input type="tel" id="billing-phone" autocomplete="tel" required>
+                        </div>
+                        <div class="form-group required">
+                            <label for="billing-email">电子邮箱</label>
+                            <input type="email" id="billing-email" autocomplete="email" required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!----- Billing-Address Area (End) ----->
+
+            <!----- 收货地址区域 (Start) ----->
+            <div class="shipping address checkout-item">
+                <div class="heading">
+                    <h2>收货地址</h2>
+                    <a href="/user/rooter/Edit Address" class="change-address-btn">更换地址</a>
+                </div>
+
+                <!-- 地址选择卡片 -->
+                <div class="address-cards">
+                    <div class="address-card selected">
+                        <h3>默认地址 <span class="default-badge">默认</span></h3>
+                        <p>张三，13800138000</p>
+                        <p>北京市海淀区中关村大街1号</p>
+                        <p>100000</p>
+                    </div>
+                    <div class="address-card">
+                        <h3>家庭地址</h3>
+                        <p>张三，13800138000</p>
+                        <p>上海市浦东新区张江高科技园区</p>
+                        <p>201203</p>
+                    </div>
+                </div>
+
+                <div class="same-as-billing">
+                    <input type="checkbox" id="same-as-billing">
+                    <label for="same-as-billing">收货地址与账单地址相同</label>
+                </div>
+
+                <form class="address-form">
+                    <div class="form-row">
+                        <div class="form-group required">
+                            <label for="shipping-first-name">收货人姓名</label>
+                            <input type="text" id="shipping-first-name" autocomplete="shipping given-name" required>
+                        </div>
+                        <div class="form-group required">
+                            <label for="shipping-phone">联系电话</label>
+                            <input type="tel" id="shipping-phone" autocomplete="shipping tel" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <label for="shipping-address">详细地址</label>
+                        <input type="text" id="shipping-address" autocomplete="shipping street-address" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group required">
+                            <label for="shipping-province">省份</label>
+                            <select id="shipping-province" required>
+                                <option value="">请选择省份</option>
+                                <option value="beijing" selected>北京市</option>
+                                <option value="shanghai">上海市</option>
+                                <option value="guangdong">广东省</option>
+                                <option value="jiangsu">江苏省</option>
+                                <option value="zhejiang">浙江省</option>
+                            </select>
+                        </div>
+                        <div class="form-group required">
+                            <label for="shipping-city">城市</label>
+                            <select id="shipping-city" required>
+                                <option value="">请选择城市</option>
+                                <option value="beijing" selected>北京市</option>
+                                <option value="shanghai">上海市</option>
+                                <option value="guangzhou">广州市</option>
+                                <option value="shenzhen">深圳市</option>
+                                <option value="hangzhou">杭州市</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group required">
+                            <label for="shipping-district">区县</label>
+                            <select id="shipping-district" required>
+                                <option value="">请选择区县</option>
+                                <option value="haidian" selected>海淀区</option>
+                                <option value="chaoyang">朝阳区</option>
+                                <option value="pudong">浦东新区</option>
+                                <option value="tianhe">天河区</option>
+                                <option value="nanshan">南山区</option>
+                            </select>
+                        </div>
+                        <div class="form-group required">
+                            <label for="shipping-postcode">邮政编码</label>
+                            <input type="text" id="shipping-postcode" autocomplete="shipping postal-code" required value="100000">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!----- Shipping-Address Area (End) ----->
+        </div>
+
+        <div class="box-2">
+            <!----- Cart-Total Area (Start) ----->
+            <div class="cart-total checkout-item">
+                <div class="heading">
+                    <h2>购物车汇总</h2>
+                </div>
+
+                <div class="summary-list">
+                    <div class="summary-item">
+                        <div class="name box">小计</div>
+                        <div class="value box">¥200.00</div>
+                    </div>
+
+                    <div class="summary-item">
+                        <div class="name box">配送费</div>
+                        <div class="value box">¥50.00</div>
+                    </div>
+
+                    <div class="summary-item">
+                        <div class="name box">折扣</div>
+                        <div class="value box">-¥20.00</div>
+                    </div>
+
+                    <div class="summary-item">
+                        <div class="name box">税费</div>
+                        <div class="value box">¥20.00</div>
+                    </div>
+
+                    <div class="summary-item" style="font-weight: bold; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
+                        <div class="name box">总计</div>
+                        <div class="value box">¥250.00</div>
+                    </div>
+                </div>
+            </div>
+            <!----- Cart-Total Area (End) ----->
+
+            <!----- Payment-Method Area (Start) ----->
+            <div class="payment-methods checkout-item">
+                <div class="heading">
+                    <h2>支付方式</h2>
+                </div>
+
+                <div class="content">
+                    <div class="payment">
+                        <input type="radio" id="direct-bank-transfer" name="payment" value="DIRECT"/>
+                        <label for="direct-bank-transfer">银行直接转账</label>
+                        <div class="payment-body active">
+                            <p>请直接付款到我们的银行账户。请使用您的订单ID作为付款参考。您的订单将在款项到账后发货。</p>
+                        </div>
+                    </div>
+
+                    <div class="payment">
+                        <input type="radio" id="cash-on-delivery" name="payment" value="CASH" />
+                        <label for="cash-on-delivery">货到付款</label>
+                        <div class="payment-body">
+                            <p>收到商品时现场支付现金。</p>
+                        </div>
+                    </div>
+
+                    <div class="payment">
+                        <input type="radio" id="paypal" name="payment" value="PAYPAL" />
+                        <label for="paypal">PayPal</label>
+                        <div class="payment-body">
+                            <p>通过PayPal支付；如果您没有PayPal账户，也可以使用信用卡支付。</p>
+                        </div>
+                    </div>
+
+                    <div class="payment">
+                        <input type="radio" id="alipay" name="payment" value="ALIPAY" checked />
+                        <label for="alipay">支付宝</label>
+                        <div class="payment-body">
+                            <p>通过支付宝安全快捷地完成支付。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!----- Payment-Method Area (End) ----->
+
+            <a href="#" class="btn">提交订单</a>
+        </div>
+    </div>
+</section>
+
+<!-------------------- Footer Area (Start) -------------------->
+<footer class="footer">
+    <div class="box-container">
+        <div class="footer-item">
+            <a class="logo" href="/user/rooter/index">
+                <i class="fas fa-leaf"></i>
+                <h2><span>绿色</span>集市</h2>
+            </a>
+            <p>提供最新鲜的有机食品和健康生活用品，让您的生活更加绿色健康。</p>
+        </div>
+
+        <div class="footer-item">
+            <h2>联系信息</h2>
+            <div class="info">
+                <p><i class="fas fa-phone"></i><span>+86 400-123-4567</span></p>
+                <p><i class="fas fa-envelope"></i><span class="gmail">service@greenmart.com</span></p>
+                <p><i class="fas fa-map-marker-alt"></i><span>北京市海淀区中关村大街1号</span></p>
+            </div>
+            <div class="social">
+                <a href="#"><i class="fab fa-weixin"></i></a>
+                <a href="#"><i class="fab fa-weibo"></i></a>
+                <a href="#"><i class="fab fa-qq"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-item">
+            <h2>快速链接</h2>
+            <div class="info">
+                <a href="/user/rooter/about"><i class="fas fa-arrow-right"></i>关于我们</a>
+                <a href="/user/rooter/contact"><i class="fas fa-arrow-right"></i>联系我们</a>
+                <a href="/user/login"><i class="fas fa-arrow-right"></i>登录</a>
+                <a href="/user/rooter/register"><i class="fas fa-arrow-right"></i>注册</a>
+                <a href="/user/rooter/faqs"><i class="fas fa-arrow-right"></i>常见问题</a>
+                <a href="/user/user/rooter/dashboard"><i class="fas fa-arrow-right"></i>仪表板</a>
+                <a href="/user/rooter/order List"><i class="fas fa-arrow-right"></i>订单列表</a>
+            </div>
+        </div>
+
+        <div class="footer-item">
+            <h2>订阅资讯</h2>
+            <p>订阅我们的新闻通讯，第一时间了解最新产品和独家优惠。</p>
+            <form class="dark-form" method="post" id="newsletter-form-2">
+                <div class="input-field">
+                    <label for="news-email-2" class="fas fa-envelope"></label>
+                    <input type="email" id="news-email-2" name="email" class="box" placeholder="您的邮箱地址" required>
+                </div>
+                <button type="submit" class="btn" name="submit" id="submit-2">订阅</button>
+                <span class="alert" id="msg-2"></span>
+            </form>
+        </div>
+    </div>
+
+    <div class="content">
+        <p>&copy; 2025 绿色集市 版权所有</p>
+    </div>
+</footer>
+<!-------------------- Footer Area (End) -------------------->
+
+<script>
+    // 地址卡片选择功能
+    document.querySelectorAll('.address-card').forEach(card => {
+        card.addEventListener('click', function() {
+            document.querySelectorAll('.address-card').forEach(c => {
+                c.classList.remove('selected');
+            });
+            this.classList.add('selected');
+
+            // 这里可以根据选中的地址卡片填充表单数据
+            // 实际应用中可以从数据属性中获取地址信息
+        });
+    });
+
+    // 同账单地址功能
+    document.getElementById('same-as-billing').addEventListener('change', function() {
+        const isChecked = this.checked;
+
+        if (isChecked) {
+            // 复制账单地址到收货地址
+            document.getElementById('shipping-first-name').value =
+                document.getElementById('billing-first-name').value;
+            document.getElementById('shipping-phone').value =
+                document.getElementById('billing-phone').value;
+            document.getElementById('shipping-address').value =
+                document.getElementById('billing-address').value;
+            document.getElementById('shipping-province').value =
+                document.getElementById('billing-province').value;
+            document.getElementById('shipping-city').value =
+                document.getElementById('billing-city').value;
+            document.getElementById('shipping-district').value =
+                document.getElementById('billing-district').value;
+            document.getElementById('shipping-postcode').value =
+                document.getElementById('billing-postcode').value;
+        } else {
+            // 清空收货地址表单
+            document.getElementById('shipping-first-name').value = '';
+            document.getElementById('shipping-phone').value = '';
+            document.getElementById('shipping-address').value = '';
+            document.getElementById('shipping-province').value = '';
+            document.getElementById('shipping-city').value = '';
+            document.getElementById('shipping-district').value = '';
+            document.getElementById('shipping-postcode').value = '';
+        }
+    });
+</script>
+</body>
+</html>

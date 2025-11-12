@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style type="text/css">
+    /* ========== 1. 密码 + 性别 同行布局 ========== */
+    .register form .row-group {
+        display: flex;                  /* 同 .terms 的 Flex 布局 */
+        align-items: center;            /* 垂直居中 */
+        gap: .5rem;                     /* 与 .terms 的 gap 统一 */
+        margin: 1rem 0;                 /* 与 .btn 的 margin 统一 */
+    }
+
+    /* ========== 2. 点击式性别切换按钮 ========== */
+    .register form .gender-toggle {
+        display: flex;                  /* 按钮同行 */
+        gap: .25rem;                    /* 按钮间距 */
+    }
+
+    .register form .gender-btn {
+        padding: 1rem;                  /* 与 .box 的内边距统一（假设 .box padding: 1rem） */
+        border: 1px solid #ddd;         /* 与 .box 的边框统一 */
+        border-radius: 4px;             /* 与 .box 的圆角统一 */
+        background: #fff;               /* 背景色与 .box 统一 */
+        color: var(--grey);             /* 文字颜色与 .terms label 统一 */
+        font-size: 1.5rem;              /* 字体大小与 .link 统一 */
+        cursor: pointer;                /* 点击反馈 */
+        transition: all .3s;            /* 动画过渡 */
+    }
+
+    .register form .gender-btn.active {
+        background: var(--green);       /* 选中态背景色与 .link 统一 */
+        color: #fff;                    /* 选中态文字色 */
+        border-color: var(--green);     /* 选中态边框色 */
+    }
+
+    /* ========== 3. 头像上传框（延续 .box 风格） ========== */
+    .register form .avatar-upload {
+        position: relative;             /* 容纳绝对定位的文件输入 */
+        display: flex;                  /* 布局：文字 + 隐藏输入 */
+        align-items: center;            /* 垂直居中 */
+        justify-content: space-between; /* 文字居左，触发区居右 */
+        padding: 1rem;                  /* 与 .box 内边距统一 */
+        border: 1px solid #ddd;         /* 与 .box 边框统一 */
+        border-radius: 4px;             /* 与 .box 圆角统一 */
+        cursor: pointer;                /* 点击反馈 */
+        margin: 1rem 0;                 /* 与 .btn 的 margin 统一 */
+    }
+
+    /* 隐藏原生文件输入，仅保留点击触发 */
+    .register form .avatar-upload input[type="file"] {
+        position: absolute;
+        opacity: 0;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        cursor: pointer;                /* 确保覆盖区域可点击 */
+    }
+
+    /* 头像提示文字（延续 .terms label 风格） */
+    .register form .avatar-label {
+        font-size: 1.5rem;              /* 与 .link 字体大小统一 */
+        color: var(--grey);             /* 与 .terms label 颜色统一 */
+    }
+</style>
+<body>
+
+<section class="register">
+    <form class="form" action="/user/login/register">
+        <h3>注&nbsp;册&nbsp;账&nbsp;号</h3>
+        <input type="text" name="username" placeholder="请输入你的姓名" class="box" />
+        <input type="text" name="phone" placeholder="请输入你的电话号码" class="box" />
+
+        <!-- 1. 密码 + 性别 同行布局（复用 .terms 的 Flex 逻辑） -->
+        <div class="row-group">
+            <input type="password" name="password" placeholder="请输入你的密码" class="box" />
+            <!-- 点击式性别切换（两个按钮） -->
+            <div class="gender-toggle">
+                <button type="button" class="gender-btn active" data-value="male">男</button>
+                <button type="button" class="gender-btn" data-value="female">女</button>
+            </div>
+        </div>
+
+        <!-- 2. 头像上传（延续 .box 风格，点击触发） -->
+        <div class="avatar-upload box">
+            <span class="avatar-label">点击上传头像</span>
+            <input type="file" name="avatar" id="avatar-file">
+        </div>
+
+        <!-- 原有条款勾选 -->
+        <div class="terms">
+            <input type="checkbox" name="" id="remember-me">
+            <label for="remember-me"> i agree with the <span>terms & conditions</span> </label>
+        </div>
+        <input type="submit" value="注册" class="btn" />
+        <p>already have an account? <a class="link" href="/user/login">login</a></p>
+    </form>
+</section>
+</body>
+</html>

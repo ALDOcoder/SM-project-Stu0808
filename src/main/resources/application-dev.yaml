@@ -1,0 +1,17 @@
+zhoulin:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: localhost
+    port: 3306
+    database: mpstu
+    username: root         # 替换为空字符串
+    password: 2314
+  jwt:
+    # 设置jwt签名加密时使用的秘钥
+    secret-key: ZHOU_LIN_2025_09_10_16_30_COMPETE
+    # 设置jwt过期时间
+    token-ttl: 72000
+    # 设置前端传递过来的令牌名称
+    token-header: Authorization
+    # 设置后端传递给前端的新的token
+    new-token-header: X-Auth-Token

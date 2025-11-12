@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>特惠商品限时折扣</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --black: #000;
+            --white: #fff;
+            --light-color: #666;
+            --box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-decoration: none;
+        }
+
+        .deal {
+            background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
+            url('https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            padding: 2rem;
+        }
+
+        .deal .content {
+            width: 50rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .deal .content h2 {
+            color: var(--black);
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .deal .content p {
+            padding: 1rem 0;
+            color: #333;
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .deal .content .counter {
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem 0;
+            padding-bottom: 1.5rem;
+            gap: 1rem;
+        }
+
+        .deal .content .counter .counter-item {
+            height: 8rem;
+            width: 8rem;
+            border: 0.1rem solid var(--black);
+            margin: 0 0.5rem;
+            display: flex;
+            flex-direction: column;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .deal .counter-item h3 {
+            height: 60%;
+            font-size: 3rem;
+            background-color: var(--white);
+            color: var(--black);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        .deal .counter-item span {
+            display: block;
+            height: 40%;
+            width: 100%;
+            font-size: 1.5rem;
+            background-color: var(--black);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 1rem 3rem;
+            background: var(--black);
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #333;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 768px) {
+            .deal .content {
+                width: 100%;
+                padding: 2rem;
+            }
+
+            .deal .content h2 {
+                font-size: 2.5rem;
+            }
+
+            .deal .content .counter .counter-item {
+                height: 6rem;
+                width: 6rem;
+            }
+
+            .deal .counter-item h3 {
+                font-size: 2.5rem;
+            }
+
+            .deal .counter-item span {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .deal .content .counter {
+                flex-wrap: wrap;
+            }
+
+            .deal .content .counter .counter-item {
+                margin-bottom: 1rem;
+            }
+
+            .deal .content h2 {
+                font-size: 2rem;
+            }
+
+            .btn {
+                padding: 0.8rem 2rem;
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<section class="deal">
+    <div class="content">
+        <h2>精选商品九折优惠</h2>
+        <p>我们精选的商品现提供10%的特别折扣。这些高质量的产品经过精心挑选，满足您的各种需求。限时优惠，机会难得，立即选购！</p>
+
+        <div class="counter">
+            <div class="counter-item">
+                <h3 id="day">00</h3>
+                <span>天</span>
+            </div>
+            <div class="counter-item">
+                <h3 id="hour">00</h3>
+                <span>时</span>
+            </div>
+            <div class="counter-item">
+                <h3 id="minute">00</h3>
+                <span>分</span>
+            </div>
+            <div class="counter-item">
+                <h3 id="second">00</h3>
+                <span>秒</span>
+            </div>
+        </div>
+
+        <a href="#" class="btn">立即购买</a>
+    </div>
+</section>
+
+<script>
+    // 设置目标日期 - 2024年12月31日
+    const futureCountdown = new Date("Dec 31, 2024 00:00:00").getTime();
+
+    function updateCountdown() {
+        // 获取当前时间
+        const now = new Date().getTime();
+
+        // 计算剩余时间
+        const gap = futureCountdown - now;
+
+        // 如果倒计时结束
+        if (gap < 0) {
+            document.getElementById("day").innerText = "00";
+            document.getElementById("hour").innerText = "00";
+            document.getElementById("minute").innerText = "00";
+            document.getElementById("second").innerText = "00";
+            return;
+        }
+
+        // 计算天、时、分、秒
+        const seconds = 1000;
+        const minutes = seconds * 60;
+        const hours = minutes * 60;
+        const days = hours * 24;
+
+        const d = Math.floor(gap / days);
+        const h = Math.floor((gap % days) / hours);
+        const m = Math.floor((gap % hours) / minutes);
+        const s = Math.floor((gap % minutes) / seconds);
+
+        // 更新显示，确保两位数格式
+        document.getElementById("day").innerText = d < 10 ? "0" + d : d;
+        document.getElementById("hour").innerText = h < 10 ? "0" + h : h;
+        document.getElementById("minute").innerText = m < 10 ? "0" + m : m;
+        document.getElementById("second").innerText = s < 10 ? "0" + s : s;
+    }
+
+    // 初始更新
+    updateCountdown();
+
+    // 每秒更新一次
+    setInterval(updateCountdown, 1000);
+</script>
+</body>
+</html>

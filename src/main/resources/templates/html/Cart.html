@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <!-- Title -->
+    <title>GreenMart | Grocery Store</title>
+
+    <!-- Font-Awesome (CSS) -->
+    <link rel="stylesheet" href="/assets/vendors/font-awesome/css/all.min.css" />
+
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/main.css?v=914" />
+    <link rel="stylesheet" href="/assets/css/responsive.css" />
+
+</head>
+<body>
+
+    <!-------------------- Scroll-Top Area (Start) -------------------->
+    <a href="#home" class="scroll-top"  >
+        <!-- 这个 <a> 标签的主要作用是 “返回页面顶部（或指定锚点位置）的导航链接”，具体解析如下：
+        1. 核心功能：锚点跳转
+        href="#home" 是 HTML 中的 锚点链接语法，表示点击后会跳转到页面中 id="home" 的元素位置。 -->
+        <i class="fas fa-arrow-up"></i>
+    </a>
+    <!-------------------- Scroll-Top Area (End) -------------------->
+
+    <header th:replace="html/header::headerFragment"></header>
+
+    <!-------------------- Header Area (Start) -------------------->
+
+
+
+    <!-------------------- Header Area (End) -------------------->
+
+
+    
+    <!-------------------- Page-Title (Start) -------------------->
+    <div class="page-title">
+        <h2>购物车</h2>
+        <p><a href="/user/rooter/index">主页</a> <i class="fas fa-long-arrow-alt-right"></i> <span>购物车</span></p>
+    </div>
+    <!-------------------- Page-Title (End) -------------------->
+
+
+
+    <!-------------------- Cart Area (Start) -------------------->
+    <section class="cart">
+
+        <!----- Shopping-Cart Area (Start) ----->
+        <div class="shopping-cart">
+
+            <div class="container">
+
+                <div class="cart-title">
+                    <h3>产品</h3>
+                    <h3>名称</h3>
+                    <h3>分类</h3>
+                    <h3>价格</h3>
+                    <h3>数量</h3>
+                    <h3>总价</h3>
+                    <h3>操作</h3>
+                </div>
+                <!--TODO 分页查询-->
+                <div class="cart-list" id="cart-list">
+                    <div id="cart-container"></div>
+                </div>
+
+            </div>
+            
+        </div>
+        <!----- Shopping-Cart Area (End) ----->
+
+
+
+        <!----- Cart-Total Area (Start) ----->
+        <div class="cart-total" >
+
+            <div class="summary-list">
+
+                <div class="summary-item">
+                    <div class="name box">商品小计</div>
+                    <div class="value box" id="total-price">¥200.00</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="name box"> 配 送 费</div>
+                    <div class="value box" id="delivery-price">+¥ 50.00</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="name box">折 扣</div>
+                    <!--- TODO 添加满减折扣功能--->
+                    <div class="value box" id="discount-price">-¥ 20.00</div>
+                </div>
+
+                <div class="summary-item">
+                    <div class="name box">优 惠 劵 </div>
+                    <!-- TODO 可以添加一个优惠卷的功能--->
+                    <div class="value box" >无 优惠券</div>
+                </div>
+
+                <div class="summary-item"> 
+                    <div class="name box"> 共 计</div>
+                    <div class="value box" id="total-price-all"></div>
+                </div>
+
+                <a href="/user/rooter/checkout" class="btn">去 结 账</a>
+
+            </div>
+
+            <div class="coupon"></div>
+
+        </div>
+        <!----- Cart-Total Area (End) ----->
+
+
+    </section>
+    <!-------------------- Cart Area (End) -------------------->
+
+    
+
+     <!-------------------- Footer Area (Start) -------------------->
+    <my-foot></my-foot>
+    <!-------------------- Footer Area (End) -------------------->
+
+
+
+    <!-- Jquery -->
+    <script src="/assets/vendors/jquery/jquery.min.js"></script>
+
+    <!--全局js请求头处理-->
+    <script src="/assets/utilsJS/requestHeader.js"></script>
+
+    <!-- Custom Script Files -->
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/nav-link-toggler.js"></script>
+    <script src="/assets/js/newsletter.js"></script>
+    <!--页脚js--->
+    <script src="/assets/utilsJS/MyFooter.js"></script>
+    <!-- 购物车功能 -->
+    <script src="/js/cart.js?v=202592015"></script>
+
+<!--    <script src="/assets/js/quantity.js"></script>-->
+
+
+</body>
+</html>
+

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhoulin.mapper.ProductsMapper">
+
+<!--    &lt;!&ndash; 通用查询映射结果 &ndash;&gt;-->
+<!--    <resultMap id="BaseResultMap" type="com.zhoulin.pojo.entity.Products">-->
+<!--        <id column="id" property="id" />-->
+<!--        <result column="name" property="name" />-->
+<!--        <result column="description" property="description" />-->
+<!--        <result column="original_price" property="originalPrice" />-->
+<!--        <result column="sale_price" property="salePrice" />-->
+<!--        <result column="discount_percentage" property="discountPercentage" />-->
+<!--        <result column="category_id" property="categoryId" />-->
+<!--        <result column="photo" property="photo" />-->
+<!--        <result column="stock_quantity" property="stockQuantity" />-->
+<!--        <result column="status" property="status" />-->
+<!--        <result column="is_featured" property="isFeatured" />-->
+<!--        <result column="is_best_seller" property="isBestSeller" />-->
+<!--        <result column="is_new" property="isNew" />-->
+<!--        <result column="view_count" property="viewCount" />-->
+<!--        <result column="created_time" property="createdTime" />-->
+<!--        <result column="updated_time" property="updatedTime" />-->
+<!--    </resultMap>-->
+
+<!--    &lt;!&ndash; 通用查询结果列 &ndash;&gt;-->
+<!--    <sql id="Base_Column_List">-->
+<!--        id, name, description, original_price, sale_price, discount_percentage, category_id, photo, stock_quantity, status, is_featured, is_best_seller, is_new, view_count, created_time, updated_time-->
+<!--    </sql>-->
+
+</mapper>

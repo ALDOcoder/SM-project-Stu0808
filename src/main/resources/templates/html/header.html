@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title -->
+    <title>GreenMart | Grocery Store</title>
+
+    <!-- Font-Awesome (CSS) -->
+    <link rel="stylesheet" href="/assets/vendors/font-awesome/css/all.min.css" />
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/main.css?v=914" />
+    <link rel="stylesheet" href="/assets/css/responsive.css" />
+</head>
+<body>
+
+<!-------------------- Scroll-Top Area (End) -------------------->
+
+<!-------------------- Header Area (Start) -------------------->
+<header class="header" th:fragment="headerFragment">
+
+    <!----- Header-1 Area (Start) ----->
+    <div class="header-1">
+
+        <!-- Logo -->
+        <a class="logo" href="/user/rooter/index" id="home">
+            <i class="fas fa-leaf"></i>
+            <h2><span>l绿色</span>集市</h2>
+        </a>
+
+        <!-- Search Form -->
+        <form class="form-container">
+            <!-- 加入搜索事件 模糊查询 TODO  -->
+            <input type="search" placeholder="search products" id="search" />
+            <label for="search" class="fas fa-search"></label>
+        </form>
+
+        <!-- Icons -->
+        <div class="icon-container">
+            <div id="search-btn" class="icon fas fa-search"></div>
+            <!-- Login登录 Icon   拓展 TODO 点击头像跳转到个人主页 -->
+            <i  id="login" class="icon fas fa-user"></i>
+            <!-- Wishlist Icon    购物车 -->
+            <a href="/user/rooter/Wishlist" id="wishlist" class="icon fas fa-heart"></a>
+            <!-- Cart Icon  订单 -->
+            <a href="/user/rooter/Cart" id="cart" class="icon fas fa-shopping-cart"></a>
+        </div>
+
+    </div>
+    <!----- Header-1 Area (Ends) ----->
+
+
+
+    <!----- Header-2 Area (Start) ----->
+    <div class="header-2">
+
+        <!-- Categories -->
+        <div class="category-dropdown">
+            <button>categories <i class="fas fa-angle-down"></i> </button>
+            <div class="category-content">
+                <a href="/user/rooter/shopGrid">fruits</a>
+                <a href="/user/rooter/shopGrid">vegetables</a>
+                <a href="/user/rooter/shopGrid">drinks</a>
+                <a href="/user/rooter/shopGrid">bakery</a>
+                <a href="/user/rooter/shopGrid">fresh meat</a>
+                <a href="/user/rooter/shopGrid">dry fruits</a>
+                <a href="/user/rooter/shopGrid">dairy</a>
+            </div>
+        </div>
+
+        <!-- Navbar -->
+        <nav class="navbar">
+
+            <a class="nav-btn" href="/user/rooter/index">home</a>
+            <div class="dropdown-menu">
+                <button class="nav-btn">pages <i class="fas fa-angle-down"></i> </button>
+                <div class="dropdown-content">
+                    <a href="/user/rooter/about">about us</a>
+                    <a href="/user/rooter/faqs">faqs</a>
+                    <a href="/user/rooter/Wishlist">wishlist</a>
+                    <a href="/user/rooter/checkout">checkout</a>
+                    <a href="/user/rooter/Cart">carts</a>
+                    <a href="/user/rooter/orderList">order list</a>
+                    <a href="/user/rooter/orderDetails">order details</a>
+                </div>
+            </div>
+            <div class="dropdown-menu">
+                <button class="nav-btn">blog <i class="fas fa-angle-down"></i> </button>
+                <div class="dropdown-content">
+                    <a href="/user/rooter/BlogGrid">blogs grid</a>
+                    <a href="/user/rooter/BlogList">blogs list</a>
+                    <a href="/user/rooter/BlogDetails">blog details</a>
+                </div>
+            </div>
+            <div class="dropdown-menu">
+                <button class="nav-btn">shop <i class="fas fa-angle-down"></i> </button>
+                <div class="dropdown-content">
+                    <a href="/user/rooter/shopGrid">shop grid</a>
+                    <a href="/user/rooter/shopList">shop list</a>
+                    <a href="/user/rooter/ProductDetails">product details</a>
+                </div>
+            </div>
+            <div class="dropdown-menu">
+                <button class="nav-btn">account <i class="fas fa-angle-down"></i> </button>
+                <div class="dropdown-content">
+                    <a href="/user/login">login</a>
+                    <a href="/user/rooter/register">register</a>
+                    <a href="/user/rooter/ChangePassword">change password</a>
+                    <a href="/user/rooter/ResetPassword">reset password</a>
+                    <a href="/user/rooter/dashboard">dashboard</a>
+                    <a href="/user/rooter/EditProfile">edit profile</a>
+                    <a href="/user/rooter/EditAddress">edit address</a>
+                </div>
+            </div>
+            <a class="nav-btn" href="/user/rooter/contact">contact</a>
+        </nav>
+
+        <div id="menu-btn" class="icon fas fa-bars"></div>
+
+    </div>
+    <!----- Header-2 Area (Ends) ----->
+
+
+
+    <!----- Mobile Menu Area (Start) ----->
+    <div class="mobile-menu">
+
+        <div id="close-side-bar" class="fas fa-times"></div>
+
+        <nav class="mobile-navbar">
+
+            <div class="nav-link">
+                <a class="nav-btn" href="/user/rooter/index">home</a>
+            </div>
+
+            <div class="nav-link">
+                <div class="main-nav-link">
+                    <button class="nav-btn"><span>pages</span> <i class="fas fa-plus"></i> </button>
+                </div>
+                <p class="sub-nav-link">
+                    <a href="/user/rooter/about">about us</a>
+                    <a href="/user/rooter/faqs">faqs</a>
+                    <a href="/user/user/rooter/Wishlist">wishlist</a>
+                    <a href="/user/user/rooter/checkout">checkout</a>
+                    <a href="/user/rooter/Cart">carts</a>
+                    <a href="/user/rooter/orderList">order list</a>
+                    <a href="/user/rooter/orderDetails">order details</a>
+                </p>
+            </div>
+
+            <div class="nav-link">
+                <div class="main-nav-link">
+                    <button class="nav-btn"><span>blog</span> <i class="fas fa-plus"></i> </button>
+                </div>
+                <p class="sub-nav-link">
+                    <a href="/user/rooter/BlogGrid">blogs grid</a>
+                    <a href="/user/rooter/BlogList">blogs list</a>
+                    <a href="/user/rooter/BlogDetails">blog details</a>
+                </p>
+            </div>
+
+            <div class="nav-link">
+                <div class="main-nav-link">
+                    <button class="nav-btn"><span>shop</span> <i class="fas fa-plus"></i> </button>
+                </div>
+                <p class="sub-nav-link">
+                    <a href="/user/rooter/shopGrid">shop grid</a>
+                    <a href="/user/rooter/shopList">shop list</a>
+                    <a href="/user/user/rooter/ProductDetails">product details</a>
+                </p>
+            </div>
+
+            <div class="nav-link">
+                <div class="main-nav-link">
+                    <button class="nav-btn"><span>account</span> <i class="fas fa-plus"></i> </button>
+                </div>
+                <p class="sub-nav-link">
+                    <a href="/user/login">login</a>
+                    <a href="/user/rooter/register">register</a>
+                    <a href="/user/user/rooter/ChangePassword">change password</a>
+                    <a href="/user/rooter/ResetPassword">reset password</a>
+                    <a href="/user/rooter/dashboard">dashboard</a>
+                    <a href="/user/rooter/EditProfile">edit profile</a>
+                    <a href="/user/rooter/EditAddress">edit address</a>
+                </p>
+            </div>
+
+            <div class="nav-link">
+                <a class="nav-btn" href="/user/rooter/contact">contact</a>
+            </div>
+
+        </nav>
+
+    </div>
+    <!----- Mobile Menu Area (Ends) ----->
+
+</header>
+<!-------------------- Header Area (End) -------------------->
+
+<!-------------------- Footer Area (Start) -------------------->
+<footer class="footer" th:fragment="footerFragment">
+
+    <div class="box-container">
+
+        <div class="footer-item">
+            <a class="logo" href="./index.html">
+                <i class="fas fa-leaf"></i>
+                <h2><span>Green</span>Mart</h2>
+            </a>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Architecto ad quae nisi! Atque harum, asperiores est
+                reiciendis laboriosam exercitationem.</p>
+        </div>
+
+        <div class="footer-item">
+            <h2>contact info</h2>
+            <div class="info">
+                <p><i class="fas fa-phone"></i><span>+111-222-333</span></p>
+                <p><i class="fas fa-envelope"></i><span class="gmail">abc@gmail.com</span></p>
+                <p><i class="fas fa-map-marker-alt"></i><span>karachi, pakistan</span></p>
+            </div>
+            <div class="social">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-item">
+            <h2>quick links</h2>
+            <div class="info">
+                <a href="/user/rooter/about"><i class="fas fa-arrow-right"></i>about us</a>
+                <a href="/user/rooter/contact"><i class="fas fa-arrow-right"></i>contact us</a>
+                <a href="/user/login"><i class="fas fa-arrow-right"></i>login</a>
+                <a href="/user/rooter/register"><i class="fas fa-arrow-right"></i>register</a>
+                <a href="/user/rooter/faqs"><i class="fas fa-arrow-right"></i>FAQs</a>
+                <a  href="/user/rooter/dashboard"><i class="fas fa-arrow-right"></i>dashboard</a>
+                <a href="/user/rooter/order List"><i class="fas fa-arrow-right"></i>order list</a>
+            </div>
+        </div>
+
+        <!-- Newsletter Subscription -->
+        <div class="footer-item">
+            <h2>Newsletter</h2>
+            <p>Be the first to know about our latest products and exclusive offers by subscribing to our newsletter.</p> <!-- Newsletter Description -->
+            <form class="dark-form" method="post" id="newsletter-form-2">
+                <div class="input-field">
+                    <label for="news-email-2" class="fas fa-envelope"></label>
+                    <input type="email" id="news-email-2" name="email" class="box" placeholder="Your email address" required>
+                </div>
+                <button type="submit" class="btn" name="submit" id="submit-2">Subscribe</button>
+                <span class="alert" id="msg-2"></span>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="content">
+        <p>© 2025 电商服务平台 -<a href="/user/rooter/index">l绿色集市</a> 为您提供卓越的购物体验</p>
+    </div>
+</footer>
+
+<!-------------------- Footer Area (End) -------------------->
+
+
+</body>
+    <!-- Jquery -->
+    <script src="/assets/vendors/jquery/jquery.min.js"></script>
+    <script src="/assets/js/nav-link-toggler.js"></script>
+</html>

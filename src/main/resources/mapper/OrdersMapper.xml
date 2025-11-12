@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhoulin.mapper.OrdersMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.zhoulin.pojo.entity.Orders">
+        <id column="id" property="id" />
+        <result column="order_no" property="orderNo" />
+        <result column="user_id" property="userId" />
+        <result column="address_id" property="addressId" />
+        <result column="payment_method" property="paymentMethod" />
+        <result column="payment_status" property="paymentStatus" />
+        <result column="subtotal" property="subtotal" />
+        <result column="shipping_fee" property="shippingFee" />
+        <result column="discount" property="discount" />
+        <result column="total_amount" property="totalAmount" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+        <result column="paid_time" property="paidTime" />
+        <result column="discount_coupon_id" property="discountCouponId" />
+        <result column="discount_coupon" property="discountCoupon" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, order_no, user_id, address_id, payment_method, payment_status, subtotal, shipping_fee, discount, total_amount, created_time, updated_time, paid_time, discount_coupon_id, discount_coupon
+    </sql>
+    <select id="getAllList" resultType="com.zhoulin.pojo.entity.Orders"
+            parameterType="com.zhoulin.pojo.dto.OrderPageQueryDTO">
+        select * from orders
+        <where>
+            <if test="orderNo != null">
+                and order_no like concat('%',#{orderNo},'%')
+            </if>
+            <if test="userId != null">
+                and user_id like concat('%',#{userId},'%')
+            </if>
+            <if test="createdTime != null">
+                and created_time &lt;=  #{createdTime}
+            </if>
+            <if test="paymentStatus != null">
+                and payment_status = #{paymentStatus}
+            </if>
+        </where>
+        order by created_time desc
+    </select>
+    <!--查询订单消费和地址-->
+    <select id="getOrderAddressAndDeatilsById" resultType="com.zhoulin.pojo.vo.OrderAddressAndDetailsVO">
+        select o.order_no,o.subtotal,o.shipping_fee,o.discount,o.total_amount,o.created_time,
+               ad.id as address_id,
+               ad.recipient,ad.phone,ad.province,ad.city,ad.district,ad.detail,ad.zip_code from orders o  left join user_address ad on ad.id = o.address_id where o.id=#{orderId}
+    </select>
+
+</mapper>

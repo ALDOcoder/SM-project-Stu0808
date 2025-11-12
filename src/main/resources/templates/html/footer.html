@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!-------------------- Footer Area (Start) -------------------->
+    <footer class="footer" th:fragment="footerFragment">
+
+        <div class="box-container">
+
+            <div class="footer-item">
+                <a class="logo" href="./index.html">
+                    <i class="fas fa-leaf"></i>
+                    <h2><span>Green</span>Mart</h2>
+                </a>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Architecto ad quae nisi! Atque harum, asperiores est
+                    reiciendis laboriosam exercitationem.</p>
+            </div>
+
+            <div class="footer-item">
+                <h2>contact info</h2>
+                <div class="info">
+                    <p><i class="fas fa-phone"></i><span>+111-222-333</span></p>
+                    <p><i class="fas fa-envelope"></i><span class="gmail">abc@gmail.com</span></p>
+                    <p><i class="fas fa-map-marker-alt"></i><span>karachi, pakistan</span></p>
+                </div>
+                <div class="social">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-item">
+                <h2>quick links</h2>
+                <div class="info">
+                    <a href="/user/rooter/about"><i class="fas fa-arrow-right"></i>about us</a>
+                    <a href="/user/rooter/contact"><i class="fas fa-arrow-right"></i>contact us</a>
+                    <a href="/user/login"><i class="fas fa-arrow-right"></i>login</a>
+                    <a href="/user/rooter/register"><i class="fas fa-arrow-right"></i>register</a>
+                    <a href="/user/rooter/faqs"><i class="fas fa-arrow-right"></i>FAQs</a>
+                    <a  href="/user/rooter/dashboard"><i class="fas fa-arrow-right"></i>dashboard</a>
+                    <a href="/user/rooter/order List"><i class="fas fa-arrow-right"></i>order list</a>
+                </div>
+            </div>
+
+            <!-- Newsletter Subscription -->
+            <div class="footer-item">
+                <h2>Newsletter</h2>
+                <p>Be the first to know about our latest products and exclusive offers by subscribing to our newsletter.</p> <!-- Newsletter Description -->
+                <form class="dark-form" method="post" id="newsletter-form-2">
+                    <div class="input-field">
+                        <label for="news-email-2" class="fas fa-envelope"></label>
+                        <input type="email" id="news-email-2" name="email" class="box" placeholder="Your email address" required>
+                    </div>
+                    <button type="submit" class="btn" name="submit" id="submit-2">Subscribe</button>
+                    <span class="alert" id="msg-2"></span>
+                </form>
+            </div>
+
+        </div>
+
+        <div class="content">
+            <p>© 2025 电商服务平台 -<a href="/user/rooter/index">l绿色集市</a> 为您提供卓越的购物体验</p>
+        </div>
+    </footer>
+    <!-------------------- Footer Area (End) -------------------->
+</body>
+</html>

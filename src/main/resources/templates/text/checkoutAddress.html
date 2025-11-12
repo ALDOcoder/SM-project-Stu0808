@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .checkout{
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            gap: 2rem;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .checkout-item{
+            background-color: var(--white);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+        }
+
+        .checkout .box-1{
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 66rem;
+            flex: 1 1 66rem;
+        }
+
+        .checkout .box-2{
+            -webkit-box-flex: 1;
+            -ms-flex: 1 1 33rem;
+            flex: 1 1 33rem;
+        }
+
+        /*----- 1- Billing Address -----*/
+        /*----- 2- Shipping Address -----*/
+
+        .checkout .address form .input-box{
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-pack: justify;
+            -ms-flex-pack: justify;
+            justify-content: space-between;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .checkout .address form .input-box .box{
+            width: 49%;
+        }
+
+        .checkout .address form .box {
+            width: 100%;
+            padding: 1.2rem 1.4rem;
+            border-radius: .5rem;
+            border: 0.1rem solid #333;
+            font-size: 1.6rem;
+            color: var(--grey);
+            text-transform: none;
+            margin: .7rem 0;
+        }
+
+        .checkout .address form .box::placeholder{
+            text-transform: capitalize;
+        }
+        /* 1. 新增：必填项标记样式 */
+        .checkout .required {
+            color: #dc3545; /* 红色警示色，符合用户认知 */
+            font-size: 1.6rem;
+            margin-left: 0.3rem;
+        }
+        .checkout .required-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 1.4rem;
+            color: var(--grey);
+        }
+        .checkout .required-label::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        /* 2. 新增：子标题样式（提升信息层级） */
+        .checkout .subheading {
+            font-size: 1.3rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* 3. 新增：表单组样式（控制标签+输入框间距） */
+        .checkout .form-group {
+            width: 100%;
+            margin-bottom: 1.2rem; /* 统一输入框垂直间距 */
+        }
+
+        /* 4. 优化：2列布局的表单组宽度（原有 49% 可能有间距问题，微调） */
+        .checkout .address form .input-box .form-group {
+            width: 48.5%; /* 留出 3% 间距，避免换行 */
+        }
+
+        /* 5. 新增：错误提示样式（预留 JS 验证用） */
+        .checkout .error-text {
+            display: block;
+            font-size: 1.2rem;
+            color: #dc3545;
+            margin-top: 0.5rem;
+            height: 1.5rem; /* 固定高度，避免验证时布局跳动 */
+        }
+
+        /* 6. 新增：「地址一致」复选框样式 */
+        .checkout .same-as-billing {
+            margin-top: 0.8rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            cursor: pointer;
+        }
+        .checkout .same-as-billing input {
+            width: 1.6rem;
+            height: 1.6rem;
+            accent-color: var(--primary-color); /* 适配品牌主色 */
+        }
+
+        /* 7. 优化：输入框交互体验（聚焦+禁用状态） */
+        .checkout .address form .box:focus {
+            border-color: var(--primary-color); /* 聚焦时边框变色，提示当前激活 */
+            outline: none; /* 清除默认轮廓 */
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* 轻微发光效果 */
+        }
+        .checkout #shipping-form .box:disabled {
+            background-color: #f8f9fa; /* 禁用时灰色背景，提示不可编辑 */
+            cursor: not-allowed;
+        }
+
+        /* 8. 响应式适配：小屏幕下 2 列布局改为 1 列 */
+        @media (max-width: 768px) {
+            .checkout .address form .input-box .form-group {
+                width: 100%; /* 小屏幕单列显示，更易填写 */
+            }
+        }
+    </style>
+</head>
+<body>
+<section>
+    <div class="checkout">
+        <div class="box-1">
+            <!-- 1. 账单地址（Billing Address）- 修正语义+必填标记 -->
+            <div class="billing address checkout-item">
+                <div class="heading">
+                    <h2>账单地址 <span class="required">*</span></h2>
+                    <p class="subheading">用于发票和支付验证</p>
+                </div>
+
+                <form id="billing-form" class="" action="">
+                    <!-- 姓名：保留 2 列布局，修正输入框类型 -->
+                    <div class="input-box">
+                        <div class="form-group">
+                            <label for="billing-firstname" class="required-label">姓名（名）</label>
+                            <input type="text" name="billingFirstName" placeholder="请输入名" id="billing-firstname" class="box" required>
+                            <span class="error-text"></span> <!-- 预留错误提示 -->
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-lastname" class="required-label">姓名（姓）</label>
+                            <input type="text" name="billingLastName" placeholder="请输入姓" id="billing-lastname" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                    </div>
+
+                    <!-- 公司：非必填，单独一列 -->
+                    <div class="form-group">
+                        <label for="billing-company">公司名称（可选）</label>
+                        <input type="text" name="billingCompany" placeholder="如：XX科技有限公司" id="billing-company" class="box">
+                    </div>
+
+                    <!-- 地址核心：分 3 行（省市区+详细地址+门牌号），适配中文地址逻辑 -->
+                    <div class="form-group">
+                        <label for="billing-region" class="required-label">省/市/区 <span class="required">*</span></label>
+                        <input type="text" name="billingRegion" placeholder="如：上海市浦东新区" id="billing-region" class="box" required>
+                        <span class="error-text"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="billing-address1" class="required-label">详细地址 <span class="required">*</span></label>
+                        <input type="text" name="billingAddress1" placeholder="如：XX路XX号XX小区" id="billing-address1" class="box" required>
+                        <span class="error-text"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="billing-address2">门牌号/单元号（可选）</label>
+                        <input type="text" name="billingAddress2" placeholder="如：1号楼3单元501" id="billing-address2" class="box">
+                    </div>
+
+                    <!-- 城市+邮编：保留 2 列布局 -->
+                    <div class="input-box">
+                        <div class="form-group">
+                            <label for="billing-city" class="required-label">城市 <span class="required">*</span></label>
+                            <input type="text" name="billingCity" placeholder="如：上海市" id="billing-city" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-zip" class="required-label">邮政编码 <span class="required">*</span></label>
+                            <input type="text" name="billingZip" placeholder="如：200120" id="billing-zip" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                    </div>
+
+                    <!-- 联系方式：保留 2 列布局，修正输入框类型 -->
+                    <div class="input-box">
+                        <div class="form-group">
+                            <label for="billing-phone" class="required-label">手机号码 <span class="required">*</span></label>
+                            <input type="tel" name="billingPhone" placeholder="如：13800138000" id="billing-phone" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="billing-email" class="required-label">电子邮箱 <span class="required">*</span></label>
+                            <input type="email" name="billingEmail" placeholder="如：xxx@example.com" id="billing-email" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 2. 收货地址（Shipping Address）- 核心优化：添加「与账单地址一致」复选框 -->
+            <div class="shipping address checkout-item">
+                <div class="heading">
+                    <h2>收货地址 <span class="required">*</span></h2>
+                    <div class="same-as-billing">
+                        <input type="checkbox" id="same-as-billing" name="sameAsBilling">
+                        <label for="same-as-billing">收货地址与账单地址一致</label>
+                    </div>
+                </div>
+
+                <form id="shipping-form" class="" action="">
+                    <!-- 结构与账单地址完全一致，默认隐藏（勾选复选框后自动填充+隐藏） -->
+                    <div class="input-box">
+                        <div class="form-group">
+                            <label for="shipping-firstname" class="required-label">姓名（名）</label>
+                            <input type="text" name="shippingFirstName" placeholder="请输入名" id="shipping-firstname" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-lastname" class="required-label">姓名（姓）</label>
+                            <input type="text" name="shippingLastName" placeholder="请输入姓" id="shipping-lastname" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shipping-company">公司名称（可选）</label>
+                        <input type="text" name="shippingCompany" placeholder="如：XX科技有限公司" id="shipping-company" class="box">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shipping-region" class="required-label">省/市/区 <span class="required">*</span></label>
+                        <input type="text" name="shippingRegion" placeholder="如：上海市浦东新区" id="shipping-region" class="box" required>
+                        <span class="error-text"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="shipping-address1" class="required-label">详细地址 <span class="required">*</span></label>
+                        <input type="text" name="shippingAddress1" placeholder="如：XX路XX号XX小区" id="shipping-address1" class="box" required>
+                        <span class="error-text"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="shipping-address2">门牌号/单元号（可选）</label>
+                        <input type="text" name="shippingAddress2" placeholder="如：1号楼3单元501" id="shipping-address2" class="box">
+                    </div>
+
+                    <div class="input-box">
+                        <div class="form-group">
+                            <label for="shipping-city" class="required-label">城市 <span class="required">*</span></label>
+                            <input type="text" name="shippingCity" placeholder="如：上海市" id="shipping-city" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-zip" class="required-label">邮政编码 <span class="required">*</span></label>
+                            <input type="text" name="shippingZip" placeholder="如：200120" id="shipping-zip" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                    </div>
+
+                    <div class="input-box">
+                        <div class="form-group">
+                            <label for="shipping-phone" class="required-label">手机号码 <span class="required">*</span></label>
+                            <input type="tel" name="shippingPhone" placeholder="如：13800138000" id="shipping-phone" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="shipping-email" class="required-label">电子邮箱 <span class="required">*</span></label>
+                            <input type="email" name="shippingEmail" placeholder="如：xxx@example.com" id="shipping-email" class="box" required>
+                            <span class="error-text"></span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- 原有 box-2（购物车总计+支付方式）完全保留，无需修改 -->
+        <div class="box-2">
+            <!-- 原有 cart-total、payment-methods、btn 代码不变 -->
+        </div>
+    </div>
+</section>
+</body>
+</html>

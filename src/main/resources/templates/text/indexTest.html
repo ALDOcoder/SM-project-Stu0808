@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Font-Awesome (CSS) -->
+    <link rel="stylesheet" href="/assets/vendors/font-awesome/css/all.min.css" />
+
+    <!-- Swiper (CSS) -->
+    <link rel="stylesheet" href="/assets/vendors/swiper/swiper-bundle.min.css" />
+
+    <!-- Magnific-Popup (CSS) -->
+    <link rel="stylesheet" href="/assets/vendors/magnific-popup/magnific-popup.css" />
+
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="/assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/responsive.css" />
+    <style type="text/css">
+
+    </style>
+
+</head>
+<body>
+
+<div class="container">
+    <i class="icon fas fa-user" id="profile"></i>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded',()=>{
+        const DOM= {
+            profileIcon: document.getElementById("profile");
+        };
+        DOM.profileIcon.addEventListener('click',(e)=>{
+            console.log("clicked---on")
+            DOM.profileIcon.classList.remove('class');
+
+
+        })
+    });
+</script>
+
+</body>
+</html>

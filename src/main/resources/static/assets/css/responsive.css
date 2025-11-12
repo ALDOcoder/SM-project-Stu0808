@@ -1,0 +1,231 @@
+  /*--------------------- Responsive (Start) ---------------------*/
+  @media (max-width: 991px){
+    html{
+        font-size: 55%;
+    }
+      
+    .navbar::-webkit-scrollbar{
+        width: 0.8rem;
+    }
+
+    .navbar::-webkit-scrollbar-thumb{
+        border-radius: 1rem;
+        background-color: #27ae60;
+    }
+
+    .navbar::-webkit-scrollbar-track{
+        background: transparent;
+    }
+
+    .blog{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        gap: 2rem;
+        flex-wrap: wrap-reverse;
+    }
+
+    .footer .box-container{
+        -ms-grid-columns: (minmax(33rem, 1fr))[auto-fit];
+        grid-template-columns: repeat(auto-fit, minmax(33rem, 1fr));
+    }
+    
+
+}
+
+@media (max-width: 768px){
+
+    section{
+        padding: 2rem;
+    }
+
+    .home .content{
+        width: 100%;
+    }
+
+    .header .header-1 .form-container{
+        position: absolute;
+        top: -100%;
+        right: 1rem;
+        border: none;
+        -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+        z-index: 1100;
+    }
+
+    .header .header-1 .form-container.active {
+        top: 18rem;
+    }
+
+    .header .header-1 .form-container label:hover{
+        background: var(--green);
+    }
+
+    .header .header-2 #menu-btn,
+    .header .icon-container #search-btn{
+        display: initial;
+    }
+
+    .header .header-2 .navbar{
+        display: none;
+    }
+
+    .shop{
+        flex-wrap: wrap-reverse;
+    }
+
+    .footer .box-container{
+        padding: 2rem;
+    }
+
+    
+.mobile-menu {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -110%;
+    height: 100%;
+    width: 30rem;
+    z-index: 10000;
+    overflow-y: auto;
+    max-height: 100%;
+    background: var(--green);
+}
+
+.mobile-menu.active {
+    left: 0;
+    -webkit-box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 0 100vw rgba(0, 0, 0, 0.7);
+}
+
+.mobile-menu::-webkit-scrollbar{
+    width: 0.8rem;
+}
+
+.mobile-menu::-webkit-scrollbar-thumb{
+    border-radius: 1rem;
+    background-color: goldenrod;
+}
+
+.mobile-menu::-webkit-scrollbar-track{
+    background: #fff;
+}
+
+.mobile-menu #close-side-bar {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    font-size: 4rem;
+    cursor: pointer;
+    color: #fff;
+}
+
+.mobile-menu #close-side-bar:hover {
+    -webkit-transform: rotate(90deg);
+            transform: rotate(90deg);
+    color: var(--black);
+}
+
+.mobile-menu .mobile-navbar {
+    padding-top: 8rem;
+}
+
+.mobile-menu .mobile-navbar .nav-link button,
+.mobile-menu .mobile-navbar .nav-link > a{
+    border-bottom: 0.1rem solid #fff;
+    background-color: var(--green);
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.mobile-menu .mobile-navbar .main-nav-link.active button,
+.mobile-menu .mobile-navbar .nav-link.active > a, 
+.mobile-menu .mobile-navbar .nav-link:hover button,
+.mobile-menu .mobile-navbar .nav-link:hover > a{
+    background-color: var(--black);
+}
+
+.mobile-menu .mobile-navbar .nav-link .sub-nav-link {
+    display: none;
+    padding-left: 2rem;
+    padding-bottom: 1rem;
+    background: var(--black);
+}
+
+.mobile-menu .mobile-navbar .nav-link .sub-nav-link a{
+    color: #fff;
+    display: block;
+    padding: 1rem 0rem;
+    font-size: 1.8rem;
+    border-bottom: 0.1rem solid #fff;
+}
+
+.mobile-menu .mobile-navbar .nav-link .sub-nav-link a:hover{
+    color: var(--green);
+}
+
+.mobile-menu .mobile-navbar .nav-link .sub-nav-link {
+    display: none;
+    -webkit-transition: all 0s;
+    -moz-transition: all 0s;
+    -o-transition: all 0s;
+    transition: all 0s;
+}
+
+.mobile-menu .mobile-navbar .nav-btn{
+    width: 100%;
+    padding: 2rem 1rem;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+
+}
+
+@media (max-width: 450px){
+    html{
+        font-size: 50%;
+    }
+
+    section{
+        padding: 1rem;
+    }
+
+    .footer .box-container{
+        padding: 2rem 1rem;
+    }
+    
+    .cart-total{
+        width: 100%;
+    }
+
+    .contact .form{
+        width: 100%;
+    }
+
+    .contact .form .box{
+        width: 100%;
+    }
+
+    .leave-reply form .input-box .box{
+        width: 100%;
+    }
+
+    .edit-address form .box {
+        width: 100%;
+    }
+    
+}
+
+/*--------------------- Responsive (End) ---------------------*/

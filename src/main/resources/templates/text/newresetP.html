@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        /* 1. 基础样式重置（统一浏览器默认样式） */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+        }
+
+        /* 2. 全局变量定义（与登录页保持一致，方便维护） */
+        :root {
+            --green: #28a745; /* 主题绿色（复用登录页链接色） */
+            --gray-light: #f5f5f5; /* 背景浅灰色 */
+            --gray: #999; /* 辅助文字色 */
+            --gray-dark: #333; /* 主要文字色 */
+            --red: #ff4d4f; /* 错误提示色 */
+            --border-radius: 4px; /* 统一圆角 */
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* 统一阴影 */
+            --transition: all 0.3s ease; /* 统一过渡效果 */
+        }
+
+        /* 3. 页面主体样式（确保页面居中、背景协调） */
+        body {
+            background-color: var(--gray-light);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px; /* 移动端留白 */
+        }
+
+        /* 4. 忘记密码模块容器（统一外层样式） */
+        .reset-pwd {
+            width: 100%;
+            max-width: 500px; /* 最大宽度限制 */
+        }
+
+        /* 5. 翻转卡片核心样式（实现3D翻转基础） */
+        .flip-card {
+            perspective: 1000px; /* 3D透视效果 */
+            width: 100%;
+        }
+
+        /* 翻转卡片内部容器（控制翻转逻辑） */
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d; /* 子元素保持3D效果 */
+            transition: var(--transition); /* 翻转过渡 */
+        }
+
+        /* 翻转状态（后续JS可通过添加此类触发翻转） */
+        .flip-card-inner.active {
+            transform: rotateY(180deg); /* 沿Y轴翻转180度 */
+        }
+
+        /* 6. 表单面板通用样式（正面/背面表单统一） */
+        .form-panel {
+            position: absolute;
+            width: 100%;
+            backface-visibility: hidden; /* 隐藏背面（翻转时不显示） */
+            background-color: #fff;
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+        }
+
+        /* 背面表单（默认隐藏，翻转后显示） */
+        .form-panel.back {
+            transform: rotateY(180deg); /* 初始翻转180度（隐藏） */
+        }
+
+        /* 7. 表单标题样式（统一标题视觉） */
+        .form-panel h3 {
+            text-align: center;
+            color: var(--gray-dark);
+            font-size: 1.8rem;
+            margin-bottom: 2.5rem;
+            letter-spacing: 2px; /* 文字间距（匹配“忘记密码”中文排版） */
+        }
+
+        /* 8. 输入组样式（统一输入框+错误提示布局） */
+        .input-group {
+            position: relative;
+            margin-bottom: 1.5rem; /* 输入组间距 */
+        }
+
+        /* 9. 输入框基础样式（统一输入框视觉） */
+        .box {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1.4rem;
+            color: var(--gray-dark);
+            transition: var(--transition);
+        }
+
+        /* 输入框聚焦样式（提升交互反馈） */
+        .box:focus {
+            outline: none;
+            border-color: var(--green); /* 聚焦时绿色边框 */
+            box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2); /* 聚焦阴影 */
+        }
+
+        /* 输入框错误状态（复用你定义的错误样式） */
+        .box.error {
+            border-color: var(--red);
+            outline-color: var(--red);
+        }
+
+        /* 10. 错误提示样式（完善位置和间距） */
+        .error-message {
+            color: var(--red);
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+            min-height: 1.5rem; /* 保持布局稳定（无错误时占位置） */
+            line-height: 1.5rem;
+        }
+
+        /* 11. 信息栏样式（返回登录/发送验证码布局） */
+        .info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0 2rem; /* 上下间距调整 */
+        }
+
+        /* 12. 链接通用样式（复用你定义的链接色） */
+        .link {
+            font-size: 1.4rem;
+            color: var(--green);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .link:hover {
+            text-decoration: underline;
+        }
+
+        /* 发送验证码禁用样式（完善禁用状态） */
+        #toggle-code.disabled {
+            pointer-events: none;
+            color: var(--gray);
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+        /* 13. 按钮样式（统一按钮视觉和交互） */
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background-color: var(--green);
+            color: #fff;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.4rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            margin: 1rem 0;
+        }
+
+        .btn:hover {
+            background-color: #218838; /* 按钮hover深色 */
+        }
+
+        /* 14. 底部文字样式（注册/返回登录链接布局） */
+        .form-panel p {
+            text-align: center;
+            font-size: 1.4rem;
+            color: var(--gray);
+            margin-top: 1.5rem;
+        }
+
+        /* 15. 响应式适配（移动端优化） */
+        @media (max-width: 768px) {
+            .form-panel {
+                padding: 2rem 1.5rem; /* 小屏幕减少内边距 */
+            }
+
+            .form-panel h3 {
+                font-size: 1.6rem;
+                margin-bottom: 2rem;
+            }
+
+            .box, .btn, .link, .form-panel p, .error-message {
+                font-size: 1.3rem; /* 小屏幕缩小字体 */
+            }
+
+            .input-group {
+                margin-bottom: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- 忘记密码模块容器 -->
+<section class="reset-pwd">
+    <!-- 翻转卡片容器（3D翻转核心） -->
+    <div class="flip-card">
+        <div class="flip-card-inner" id="flipCardInner">
+            <!-- 正面：验证码校验表单 -->
+            <form class="form-panel front" id="reset-form" action="/user/login/resetByCode" method="post">
+                <h3>忘&nbsp;记&nbsp;密&nbsp;码</h3>
+
+                <!-- 手机号输入组（带错误提示） -->
+                <div class="input-group">
+                    <input type="text" name="phone" placeholder="请输入你的电话号码"
+                           id="phone-or-newPassword" class="box" maxlength="11">
+                    <div class="error-message" id="phone-error"></div>
+                </div>
+
+                <!-- 验证码输入组（补全输入组结构，统一样式） -->
+                <div class="input-group">
+                    <input type="text" name="code" placeholder="请输入你的验证码"
+                           id="code-or-newPassword" class="box" maxlength="6">
+                    <div class="error-message" id="code-error"></div>
+                </div>
+
+                <!-- 信息栏：返回登录 + 发送验证码 -->
+                <div class="info">
+                    <a class="link" href="/user/login">返&nbsp;回&nbsp;登&nbsp;录</a>
+                    <a class="link" href="javascript:void(0)" id="toggle-code">发送验证码</a>
+                </div>
+
+                <input type="submit" value="校验验证码" class="btn" name="submit">
+                <p>没有账号? <a class="link" href="/user/rooter/register">注册</a></p>
+            </form>
+
+            <!-- 背面：修改密码表单（补全翻转面板结构） -->
+            <form class="form-panel back" id="password-form" action="/user/login/resetByCode" method="post">
+                <h3>修&nbsp;改&nbsp;密&nbsp;码</h3>
+
+                <!-- 新密码输入组（补全错误提示容器） -->
+                <div class="input-group">
+                    <input type="password" name="password" placeholder="请输入你的新密码"
+                           id="newPassword" class="box" minlength="6">
+                    <div class="error-message" id="password-error"></div>
+                </div>
+
+                <!-- 确认密码输入组（补全错误提示容器） -->
+                <div class="input-group">
+                    <input type="password" name="passwordAgain" placeholder="请确认你的新密码"
+                           id="newPasswordAgain" class="box" minlength="6">
+                    <div class="error-message" id="passwordAgain-error"></div>
+                </div>
+
+                <input type="submit" value="提交" class="btn" name="passwordSubmit">
+                <p><a class="link" href="/user/login">返回登录页</a></p>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+        // 示例：校验验证码通过后翻转到修改密码面板
+        document.getElementById('reset-form').addEventListener('submit', function(e) {
+        e.preventDefault(); // 阻止默认提交（实际项目需替换为真实校验逻辑）
+
+        // 模拟校验通过（实际需对接后端接口）
+        const phone = document.getElementById('phone-or-newPassword').value;
+        const code = document.getElementById('code-or-newPassword').value;
+        if (phone && code) {
+        // 触发翻转
+        document.getElementById('flipCardInner').classList.add('active');
+    } else {
+        // 显示错误提示
+        if (!phone) document.getElementById('phone-error').textContent = '请输入手机号';
+        if (!code) document.getElementById('code-error').textContent = '请输入验证码';
+    }
+    });
+
+        // 示例：发送验证码倒计时逻辑
+        document.getElementById('toggle-code').addEventListener('click', function() {
+        const phone = document.getElementById('phone-or-newPassword').value;
+        if (!/^1[3-9]\d{9}$/.test(phone)) {
+        document.getElementById('phone-error').textContent = '请输入正确的手机号';
+        return;
+    }
+
+        // 倒计时60秒
+        let sec = 60;
+        const btn = this;
+        btn.classList.add('disabled');
+        btn.textContent = `重新发送(${sec}s)`;
+
+        const timer = setInterval(() => {
+        sec--;
+        btn.textContent = `重新发送(${sec}s)`;
+        if (sec <= 0) {
+        clearInterval(timer);
+        btn.classList.remove('disabled');
+        btn.textContent = '发送验证码';
+    }
+    }, 1000);
+
+        // 实际项目需在此处调用后端“发送验证码”接口
+    });
+</script>
+
+
+</body>
+</html>

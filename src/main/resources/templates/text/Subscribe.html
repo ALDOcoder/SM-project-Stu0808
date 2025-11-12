@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新闻订阅板块</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .newsletter-section {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .newsletter-image {
+            flex: 1;
+            min-width: 300px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .newsletter-image::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .newsletter-image::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -60px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .image-content {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .image-content i {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .image-content h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .image-content p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .newsletter-form {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .newsletter-form h2 {
+            color: #2c3e50;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .newsletter-form h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            border-radius: 2px;
+        }
+
+        .newsletter-form > p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .input-with-icon {
+            position: relative;
+        }
+
+        .input-with-icon .icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #3498db;
+            font-size: 1.2rem;
+        }
+
+        .input-with-icon input {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            border: 2px solid #eaeaea;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-with-icon input:focus {
+            border-color: #3498db;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .subscribe-btn {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .subscribe-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(38, 117, 252, 0.3);
+        }
+
+        .privacy-note {
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-align: center;
+        }
+
+        .privacy-note a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .benefits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .benefit {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+
+        .benefit i {
+            margin-right: 8px;
+            color: #2ecc71;
+        }
+
+        @media (max-width: 768px) {
+            .newsletter-section {
+                flex-direction: column;
+            }
+
+            .newsletter-image, .newsletter-form {
+                min-width: 100%;
+            }
+
+            .newsletter-form {
+                padding: 30px;
+            }
+        }
+
+        .success-message {
+            background: #e8f6ef;
+            color: #27ae60;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="newsletter-section">
+        <div class="newsletter-image">
+            <div class="image-content">
+                <i class="fas fa-envelope-open-text"></i>
+                <h3>订阅我们的新闻通讯</h3>
+                <p>第一时间获取最新产品信息、独家优惠和精彩内容</p>
+            </div>
+        </div>
+
+        <div class="newsletter-form">
+            <h2>订阅新闻通讯</h2>
+            <p>成为我们的订阅用户，第一时间了解最新产品动态、独家优惠和精彩内容。我们承诺不会用无关信息打扰您。</p>
+
+            <form class="dark-form" method="post" id="newsletter-form">
+                <div class="form-group">
+                    <div class="input-with-icon">
+                        <span class="icon"><i class="fas fa-envelope"></i></span>
+                        <input type="email" id="news-email" name="email" class="box" placeholder="请输入您的电子邮箱地址" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="subscribe-btn" name="submit" id="submit">
+                    <i class="fas fa-paper-plane"></i> 立即订阅
+                </button>
+
+                <p class="privacy-note">点击"订阅"表示您同意我们的<a href="#">隐私政策</a>和<a href="#">服务条款</a></p>
+            </form>
+
+            <div class="success-message" id="success-message">
+                <i class="fas fa-check-circle"></i> 感谢您的订阅！我们已经向您的邮箱发送了确认邮件。
+            </div>
+
+            <div class="benefits">
+                <div class="benefit">
+                    <i class="fas fa-gift"></i> 独家优惠
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-newspaper"></i> 最新资讯
+                </div>
+                <div class="benefit">
+                    <i class="fas fa-tag"></i> 特别折扣
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('newsletter-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // 获取邮箱输入值
+        const email = document.getElementById('news-email').value;
+
+        // 简单的邮箱格式验证
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailPattern.test(email)) {
+            alert('请输入有效的电子邮箱地址');
+            return;
+        }
+
+        // 显示成功消息
+        const successMessage = document.getElementById('success-message');
+        successMessage.style.display = 'block';
+
+        // 3秒后隐藏成功消息
+        setTimeout(function() {
+            successMessage.style.display = 'none';
+        }, 5000);
+
+        // 在实际应用中，这里应该发送AJAX请求到服务器
+        console.log('订阅邮箱:', email);
+
+        // 清空输入框
+        document.getElementById('news-email').value = '';
+    });
+</script>
+</body>
+</html>

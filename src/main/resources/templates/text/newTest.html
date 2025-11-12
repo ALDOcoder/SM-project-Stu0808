@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>新闻通讯订阅</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .newsletter-subscribe {
+            width: 100%;
+            padding: 6rem 5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1516387938699-a93567ec168e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-position: center;
+            background-size: cover;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .newsletter-subscribe .content {
+            width: 70rem;
+            text-align: center;
+            padding-top: 3rem;
+        }
+
+        .newsletter-subscribe h2 {
+            font-size: 4.5rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .newsletter-subscribe p {
+            letter-spacing: 0.15rem;
+            font-weight: 600;
+            color: #e0e0e0;
+            padding-top: 1rem;
+            padding-bottom: 3rem;
+            line-height: 1.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter-subscribe .box-container {
+            max-width: 60rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 0.5rem;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .newsletter-subscribe input {
+            padding: 1.5rem;
+            width: 100%;
+            color: #333;
+            background-color: #fff;
+            text-transform: none;
+            font-size: 1.6rem;
+            border: none;
+            outline: none;
+            border-radius: 8px;
+        }
+
+        .newsletter-form .alert {
+            min-height: 3.5rem;
+            display: block;
+            font-size: 1.6rem;
+            color: #4CAF50;
+            padding-top: 1.5rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-form .alert.error {
+            color: #f44336;
+        }
+
+        .newsletter-form .btn {
+            text-align: center;
+            padding: 1.5rem 3rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 120px;
+        }
+
+        .newsletter-form .btn:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .newsletter-form .btn:active {
+            transform: translateY(0);
+        }
+
+        .newsletter-form .btn:disabled {
+            background-color: #a5d6a7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .newsletter-form .btn .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s ease infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .newsletter-subscribe h2 {
+                font-size: 3.5rem;
+            }
+
+            .newsletter-subscribe .box-container {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1.5rem;
+            }
+
+            .newsletter-form .btn {
+                width: 100%;
+            }
+
+            .newsletter-subscribe p {
+                font-size: 1.4rem;
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<section class="newsletter-subscribe">
+    <div class="content">
+        <h2>订阅新闻通讯</h2>
+        <p>成为我们的订阅用户，第一时间了解最新产品动态、独家优惠和精彩内容。我们承诺不会用无关信息打扰您。</p>
+        <form class="newsletter-form" method="post" id="newsletter-form-1">
+            <div class="box-container">
+                <input type="text" id="sub-phone-1" name="phone" placeholder="请输入你的电话号码。" required>
+                <button type="submit" class="btn" name="submit" id="submit-1">
+                    <span class="btn-text">订阅</span>
+                </button>
+            </div>
+            <span class="alert" id="msg-1"></span>
+        </form>
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        // 手机号校验函数
+        function checkPhone(phone) {
+            var reg = /^1[3456789]\d{9}$/;
+            return reg.test(phone);
+        }
+
+        // 显示消息函数
+        function showMessage(element, message, isError = false) {
+            element.text(message);
+            element.removeClass('error');
+            if (isError) {
+                element.addClass('error');
+            }
+            element.fadeIn();
+
+            // 3秒后自动隐藏消息
+            setTimeout(function() {
+                element.fadeOut();
+            }, 3000);
+        }
+
+        // 设置新闻通讯表单
+        function setupNewsletterForm(formId, msgId, submitId) {
+            $(formId).on('submit', function(e) {
+                e.preventDefault();
+
+                var form = $(this);
+                var msgElement = $(msgId);
+                var submitBtn = $(submitId);
+                var btnText = submitBtn.find('.btn-text');
+
+                // 清除前一个消息
+                msgElement.hide();
+
+                // 获取手机号输入值
+                var phoneInput = form.find('input[name="phone"]').val().trim();
+
+                // 验证手机号
+                if (!checkPhone(phoneInput)) {
+                    showMessage(msgElement, '请输入正确的手机号码', true);
+                    return false;
+                }
+
+                // 更新按钮状态
+                submitBtn.attr('disabled', true);
+                btnText.text('处理中...');
+
+                // 使用AJAX提交表单数据
+                $.ajax({
+                    url: '/user/subscript',
+                    type: 'post',
+                    data: form.serialize(),
+                    success: function(res) {
+                        if (res.code === 200) {
+                            showMessage(msgElement, '订阅成功！');
+                            form[0].reset();
+                        } else {
+                            showMessage(msgElement, '订阅失败，请稍后重试', true);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("订阅请求错误:", error);
+                        showMessage(msgElement, '网络错误，请稍后重试', true);
+                    },
+                    complete: function() {
+                        // 恢复按钮状态
+                        submitBtn.attr('disabled', false);
+                        btnText.text('订阅');
+                    }
+                });
+            });
+        }
+
+        // 调用函数
+        setupNewsletterForm('#newsletter-form-1', '#msg-1', '#submit-1');
+    });
+</script>
+</body>
+</html>

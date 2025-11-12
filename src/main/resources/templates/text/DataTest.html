@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>当前准确时间</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 800px;
+            width: 100%;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .time-display {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #ffcc00;
+        }
+
+        .timestamp {
+            font-size: 1.2rem;
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            word-break: break-all;
+        }
+
+        .explanation {
+            text-align: left;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .explanation h2 {
+            margin-bottom: 15px;
+            color: #ffcc00;
+        }
+
+        .explanation ul {
+            margin-left: 20px;
+        }
+
+        .explanation li {
+            margin-bottom: 10px;
+        }
+
+        .highlight {
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        @media (max-width: 600px) {
+            .time-display {
+                font-size: 2.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>当前准确时间</h1>
+
+    <div class="time-display" id="current-time">加载中...</div>
+
+    <div class="timestamp">
+        当前时间戳: <span id="timestamp">-</span>
+    </div>
+
+    <div class="explanation">
+        <h2>如何获取准确时间</h2>
+        <ul>
+            <li>使用 <span class="highlight">new Date()</span> 创建日期对象，它表示当前的日期和时间</li>
+            <li>使用 <span class="highlight">Date.now()</span> 或 <span class="highlight">new Date().getTime()</span> 获取当前时间戳（从1970年1月1日至今的毫秒数）</li>
+            <li>时间戳可以转换为各种时间格式：
+                <ul>
+                    <li><span class="highlight">getHours()</span>, <span class="highlight">getMinutes()</span>, <span class="highlight">getSeconds()</span> - 获取时、分、秒</li>
+                    <li><span class="highlight">getFullYear()</span>, <span class="highlight">getMonth()</span>, <span class="highlight">getDate()</span> - 获取年、月、日</li>
+                    <li><span class="highlight">toLocaleString()</span> - 获取本地化格式的时间字符串</li>
+                </ul>
+            </li>
+            <li>使用 <span class="highlight">setInterval()</span> 函数可以实时更新时间显示</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    function updateTime() {
+        // 获取当前时间
+        const now = new Date();
+
+        // 获取时间戳（毫秒）
+        const timestamp = now.getTime();
+
+        // 格式化时间显示
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        const seconds = String(now.getSeconds()).padStart(2, '0');
+        const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
+
+        const timeString = `${hours}:${minutes}:${seconds}.${milliseconds}`;
+
+        // 更新页面显示
+        document.getElementById('current-time').textContent = timeString;
+        document.getElementById('timestamp').textContent = timestamp;
+    }
+
+    // 立即更新一次时间
+    updateTime();
+
+    // 每10毫秒更新一次时间（实现毫秒级显示）
+    setInterval(updateTime, 10);
+</script>
+</body>
+</html>
