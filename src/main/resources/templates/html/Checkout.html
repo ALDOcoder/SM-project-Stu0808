@@ -16,8 +16,6 @@
     <link rel="stylesheet" href="/assets/css/responsive.css" />
     <link rel="stylesheet" href="/assets/css/Checkout.css?v=10" />
 
-
-
 </head>
 <body>
 
@@ -91,45 +89,21 @@
                             <div class="form-group">
                                 <label for="province" class="label-flex">省份 *</label>
                                 <select id="province" name="province" class="box" required>
-                                    <option value="">请选择省份</option>
-                                    <option value="beijing">北京市</option>
-                                    <option value="shanghai">上海市</option>
-                                    <option value="jiangsu">江苏省</option>
-                                    <option value="zhejiang">浙江省</option>
-                                    <option value="guangdong">广东省</option>
-                                    <option value="jiangxi">江西省</option>
+
                                 </select>
                             </div>
 
                             <div class="form-group">
                                 <label for="city" class="label-flex">城市 *</label>
                                 <select id="city" name="city" class="box" required>
-                                    <option value="">请选择城市</option>
-                                    <option value="beijing" data-province="beijing">北京市</option>
-                                    <option value="shanghai" data-province="shanghai">上海市</option>
-                                    <option value="nanjing" data-province="jiangsu">南京市</option>
-                                    <option value="suzhou" data-province="jiangsu">苏州市</option>
-                                    <option value="hangzhou" data-province="zhejiang">杭州市</option>
-                                    <option value="ningbo" data-province="zhejiang">宁波市</option>
-                                    <option value="guangzhou" data-province="guangdong">广州市</option>
-                                    <option value="shenzhen" data-province="guangdong">深圳市</option>
-                                    <option value="shangrao" data-province="jiangxi">上饶市</option>
-                                    <option value="nanchang" data-province="jiangxi">南昌市</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="input-row">
                             <div class="form-group">
-                                <label for="district" class="label-flex">区县 *</label>
+                                <label for="district" class="label-flex">区/县 *</label>
                                 <select id="district" name="district" class="box" required>
-                                    <option value="">请选择区县</option>
-                                    <option value="haidian" data-city="beijing">海淀区</option>
-                                    <option value="chaoyang" data-city="beijing">朝阳区</option>
-                                    <option value="pudong" data-city="shanghai">浦东新区</option>
-                                    <option value="xuhui" data-city="shanghai">徐汇区</option>
-                                    <option value="poyang" data-city="shangrao">鄱阳县</option>
-                                    <option value="xinzhou" data-city="shangrao">信州区</option>
                                 </select>
                             </div>
 
@@ -271,10 +245,11 @@
     <script src="/assets/js/newsletter.js"></script>
     <script src="/assets/js/payment-method.js"></script>
     <!---checkout逻辑层--->
+    <!-- 地址选择功能已整合到checkout.js中 -->
     <script src="/js/checkout.js?v=20250923028"></script>
 
     <script src="/assets/utilsJS/MyFooter.js"></script>
-
+    
 
 </body>
 </html>

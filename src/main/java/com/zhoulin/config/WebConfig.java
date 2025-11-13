@@ -1,5 +1,6 @@
 package com.zhoulin.config;
 
+import com.zhoulin.interceptor.JSONContentTypeInterceptor;
 import com.zhoulin.interceptor.JwtTokenInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private JwtTokenInterceptor jwtTokenInterceptor;
 
+    @Autowired
+    private JSONContentTypeInterceptor jsonContentTypeInterceptor;
+
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         // 设置根路径默认跳转到登录页面
@@ -35,6 +39,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         log.info("开始注册自定义拦截器...");
+        //JSON 文件 Content-Type 拦截器（解决前端解析问题）
+        registry.addInterceptor(jsonContentTypeInterceptor)
+                .addPathPatterns("/**");
         registry.addInterceptor(jwtTokenInterceptor)
                 .addPathPatterns("/user/rooter/Cart","/user/subscript","/user/cart/addCarted","/user/cart/queryCarted",
                         "/user/cart/deleteByProductId","/user/cart/updateQuantity",

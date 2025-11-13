@@ -1,4 +1,5 @@
 //==== 加载所需的数据
+"use strict";
 const DOM ={
 
 
@@ -15,7 +16,14 @@ const DOM ={
     $totalPrice : $('#total-price'), // 小计
     $deliveryPrice : $('#delivery-price'), // 配送费
     $discountPrice : $('#discount-price'), // 折扣
-    $totalPriceAll : $('#total-price-all') // 总计
+    $totalPriceAll : $('#total-price-all') ,// 总计
+    // 全国地址相关DOM元素
+    $province : $(' #province '),//省份
+    $city : $(' #city '),//城市
+    $district : $(' #district '),//区县
+    $provinceMap:{},//省份容器
+    $cityMap:{},//城市容器
+    $districtMap:{},//区县容器
 
 };
 
@@ -48,11 +56,15 @@ function controllerForm() {
     DOM.$addressList.off('click', evenEditBtn);
     DOM.$addressList.off('click', evenSetDefaultBtn);
     DOM.$addressList.off('click', evenSelectBtn); // 添加这一行
+
     //再添加监听器
     DOM.$addressList.on('click',evenDeleteBtn);
     DOM.$addressList.on('click',evenEditBtn);
     DOM.$addressList.on('click',evenSetDefaultBtn);
     DOM.$addressList.on('click',evenSelectBtn); // 添加这一行
+
+    DOM.$province.on('change',renderCitySelect);
+    DOM.$city.on('change',renderDistrictSelect);
 
 }
 // ===== 1.2 发送请求 =======
@@ -507,15 +519,6 @@ function  AddressDataForm(address){
         $("#isDefault").prop('checked',address.isDefault);
         // 原生赋值
         // document.getElementById("addressId").value=address.id;
-        // document.getElementById("zip").value=address.zipCode;
-        // document.getElementById("recipient").value=address.recipient;
-        // document.getElementById("phone").value=address.phone;
-        // document.getElementById("province").value=address.province;
-        // document.getElementById("city").value=address.city;
-        // document.getElementById("district").value=address.district;
-        // document.getElementById("detail").value=address.detail;
-        // document.getElementById("addressTag").value=address.addressTag;
-        // document.getElementById("isDefault").checked=address.isDefault;
     }
 }
 
@@ -784,14 +787,136 @@ function validateData(){
     return true;
 }
 
+//======= 9 跟新地址列表 添加全国事件
+//======= 9.1 获取全国三级地址JSON数据
+async function loadAddressSelectData() {
+    $.get('/address/pca-code.json',function (rawData){
+        rawData.forEach(province=>{
+           DOM.$provinceMap[province.code] = province;
+           //生成城市映射
+            province.children.forEach(city=>{
+                DOM.$cityMap[city.code] = city;
+                //生成地区映射
+                city.children.forEach(area=>{
+                    DOM.$districtMap[area.code] = area;
+                });
+            });
+            //渲染省份下拉框
+            const provinceSelect =['<option value="">选择省份</option>'];
+            resetSelect(DOM.$city, "选择城市");
+            resetSelect(DOM.$district, "选择县/区");
+            Object.values(DOM.$provinceMap).forEach( province=>{
+                provinceSelect.push(`<option value="${province.code}">${province.name}</option>`);
+            });
+            DOM.$province.html(provinceSelect.join(''));
+        });
+    },'json').fail(()=>{
+        alert('加载JSON全国三级地址数据失败，请刷新页面重试');
+    });
+}
+//======= 9.2 渲染地址城市列表
+function renderCitySelect() {
+    const provinceCode = $(this).val();
+    resetSelect(DOM.$city, "选择城市");
+    resetSelect(DOM.$district, "选择县/区");
 
+
+    if (provinceCode) {
+        // 直接通过映射取省份，O(1) 速度
+        const currentProvince =DOM.$provinceMap[provinceCode];
+        const cityData = currentProvince?.children || [];
+        const citySelectData = ['<option value="">选择城市</option>'];
+
+        cityData.forEach(city => {
+            citySelectData.push(`<option value="${city.code}">${city.name}</option>`);
+        });
+        DOM.$city.html(citySelectData.join(''));
+    }
+}
+//======= 9.3 渲染地址地区列表
+function renderDistrictSelect() {
+    const cityCode = $(this).val();
+    resetSelect(DOM.$district, "选择县/区");
+
+    if (cityCode) {
+        const currentCity = DOM.$cityMap[cityCode];
+        const districtData = currentCity?.children || [];
+        const districtSelectData = ['<option value="">选择县/区</option>'];
+        districtData.forEach(district => {
+            districtSelectData.push(`<option value="${district.code}">${district.name}</option>`);
+        });
+        DOM.$district.html(districtSelectData.join(''));
+    }
+}
+
+//======= 9.4 重置下拉框工具函数
+function resetSelect(selectElem, defaultText = "请选择") {
+    selectElem.html(`<option value="">${defaultText}</option>`);
+}
+
+//======= 9.5 测试地址选择功能
+// function testAddressSelection() {
+//     console.log("开始测试地址选择功能...");
+//
+//     // 检查地址数据是否正确加载
+//     setTimeout(() => {
+//         console.log("省份数据数量:", Object.keys(DOM.$provinceMap).length);
+//         console.log("城市数据示例:", Object.keys(DOM.$cityMap).slice(0, 5));
+//
+//         // 测试省份下拉框
+//         if (DOM.$province.find('option').length > 1) {
+//             console.log("✓ 省份下拉框加载成功");
+//
+//             // 测试省份变更触发城市加载
+//             const firstProvince = DOM.$province.find('option:not([value=""]):first');
+//             if (firstProvince.length) {
+//                 console.log(`选择第一个省份: ${firstProvince.text()}`);
+//                 firstProvince.prop('selected', true);
+//                 DOM.$province.trigger('change');
+//
+//                 // 检查城市是否加载
+//                 setTimeout(() => {
+//                     if (DOM.$city.find('option').length > 1) {
+//                         console.log("✓ 城市下拉框加载成功");
+//
+//                         // 测试城市变更触发区县加载
+//                         const firstCity = DOM.$city.find('option:not([value=""]):first');
+//                         if (firstCity.length) {
+//                             console.log(`选择第一个城市: ${firstCity.text()}`);
+//                             firstCity.prop('selected', true);
+//                             DOM.$city.trigger('change');
+//
+//                             // 检查区县是否加载
+//                             setTimeout(() => {
+//                                 if (DOM.$district.find('option').length > 1) {
+//                                     console.log("✓ 区县下拉框加载成功");
+//                                     console.log("✓ 地址选择三级联动测试通过");
+//                                 } else {
+//                                     console.error("✗ 区县下拉框加载失败");
+//                                 }
+//                             }, 100);
+//                         }
+//                     } else {
+//                         console.error("✗ 城市下拉框加载失败");
+//                     }
+//                 }, 100);
+//             }
+//         } else {
+//             console.error("✗ 省份下拉框加载失败");
+//         }
+//     }, 500); // 给数据加载一些时间
+// }
 
 $(document).ready(async ()=>{
     try {
         controllerForm(); // 初始化事件绑定
         eventCheckOutBtn(); // 绑定结账按钮事件
+        loadAddressSelectData(); // 加载全国三级地址数据
         await loadAddressList(); // 加载地址列表（若loadAddressList返回Promise）
         await loadCartSummary(); // 加载购物车汇总信息
+        
+        // // 测试地址选择功能（在开发环境使用，生产环境可注释）
+        // setTimeout(testAddressSelection, 1000);
     } catch (err) {
         console.error('页面初始化失败：', err);
         alert('页面加载失败，请刷新页面重试');
