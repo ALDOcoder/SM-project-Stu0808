@@ -273,6 +273,9 @@ function renderAddressList(addressList){
         const isDefault = item.isDefault === 1;
         console.log("是否为默认地址",item.isDefault);
         if(item.isDefault) DOM.$selectAddressId=item.id;
+        const provinceName=DOM.$provinceMap[item.province]; // 获取省份名称,加载时把从后端获取code的省市区数据name映射到当前页面
+        const cityName=DOM.$cityMap[item.city];
+        const districtName=DOM.$districtMap[item.district];// 获取区县名称
         htmlStr += `
              <div class="address-card ${item.isDefault ? 'active' : ''}" data-address-id="${item.id}">
                             <div class="card-content">
@@ -283,7 +286,7 @@ function renderAddressList(addressList){
                           
                                  <div class="card-title">
                                      <p><span>${item.recipient}</span> • ${item.phone}</p>
-                                     <p>${item.province}${item.city}${item.district}${item.detail}</p>
+                                     <p>${provinceName? provinceName.name:item.province}${cityName? cityName.name:item.city}${districtName? districtName.name:item.district}${item.detail}</p>
                                      <p>邮政编码：${item.zipCode || '未填写'}</p>
                                  </div>
                             
@@ -511,14 +514,40 @@ function  AddressDataForm(address){
         $("#zip").val(address.zipCode);
         $("#recipient").val(address.recipient);
         $("#phone").val(address.phone);
-        $("#province").val(address.province);
-        $("#city").val(address.city);
-        $("#district").val(address.district);
         $("#detail").val(address.detail);
         $("#addressTag").val(address.addressTag);
         $("#isDefault").prop('checked',address.isDefault);
-        // 原生赋值
-        // document.getElementById("addressId").value=address.id;
+        
+        // 省市县联动赋值 - 需要按顺序设置并触发change事件
+        //方法一：直接设置，去触发change事件 代码复用: 复用 现有的renderCitySelect和renderDistrictSelect函数 耦合度: 与现有事件处理逻辑耦合
+       // 时序控制:依赖setTimeout确保执行顺序  代码可读性:逻辑可能较难跟踪，因为涉及事件触发和回调  性能:可能稍差，因为涉及事件分发和处
+        //方法二：直接生成市县的html: 代码可读性:逻辑更清晰，因为直接生成HTML，不需要事件触发和回调  性能:可能更好，因为不需要事件分发和回调
+        //代码复用需要重写生成HTML的逻辑 耦合度：更独立，不依赖事件机制
+        //果要进一步优化，可以考虑将生成HTML的逻辑提取为独立函数，以便在其他地方需要时也能复用，保持代码的DRY（Don't Repeat Yourself）原则。
+        if(address.province) {
+            // 1. 设置省份值并触发change事件加载城市
+            $("#province").val(address.province);
+            // 使用setTimeout确保DOM更新后再触发change事件
+            setTimeout(() => {
+                $("#province").trigger('change');
+                
+                // 2. 在省份change事件回调后设置城市值并触发change事件加载区县
+                setTimeout(() => {
+                    if(address.city) {
+                        $("#city").val(address.city);
+                        $("#city").trigger('change');
+                        
+                        // 3. 在城市change事件回调后设置区县值
+                        setTimeout(() => {
+                            if(address.district) {
+                                $("#district").val(address.district);
+                            }
+                        }, 50);
+                    }
+                }, 50);
+            }, 50);
+        }
+
     }
 }
 
@@ -716,7 +745,6 @@ function  eventCheckOutBtn(){
             // // 5. 订单提交成功后的处理
             // alert('订单提交成功！');
             // console.log('订单提交成功', orderResult);
-
             // 6. 跳转到订单详情页面或支付页面
            //  window.location.href = '/user/rooter/orderDetails?id=' + orderResult.id;
 
@@ -909,9 +937,9 @@ function resetSelect(selectElem, defaultText = "请选择") {
 
 $(document).ready(async ()=>{
     try {
+        loadAddressSelectData(); // 加载全国三级地址数据
         controllerForm(); // 初始化事件绑定
         eventCheckOutBtn(); // 绑定结账按钮事件
-        loadAddressSelectData(); // 加载全国三级地址数据
         await loadAddressList(); // 加载地址列表（若loadAddressList返回Promise）
         await loadCartSummary(); // 加载购物车汇总信息
         

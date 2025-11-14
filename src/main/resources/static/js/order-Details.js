@@ -10,6 +10,9 @@ DOM={
     $orderDelivery:$('#order-delivery-price'),// order-details 订单运费
     $orderDiscount:$('#order-discount-price'),// order-details 订单优惠信息
     $addressInfo:$('#address-info'),// order-details 收货地址信息
+    $provinceMap:{},//全国三级地址数据 省份Map
+    $cityMap:{},//全国三级地址数据 市Map
+    $districtMap:{},
 
 }
 //============ 1.从导航中获取orderId //TODO 可以它进行加密处理
@@ -141,17 +144,20 @@ async function loadOrderDetails(){
         DOM.$orderDelivery.html("¥"+Number(data.shippingFee).toFixed(2)+"元");//运费
         DOM.$orderDiscount.html("¥"+Number(data.discount).toFixed(2)+"元"); //折扣
         DOM.$totalPriceAll.html("¥"+Number(data.totalAmount).toFixed(2)+"元");
-        console.log('totalPrice',DOM.$totalPriceAll);
-        
+
+
+
+        let provinceName=DOM.$provinceMap[data.province];
+        let cityName=DOM.$cityMap[data.city];
+        let districtName=DOM.$districtMap[data.district];
         //======开始渲染地址栏数据
-        
         // 构建地址HTML，保持与HTML示例相同的格式
         let addressHtml = `
             <p><span>${data.recipient|| '未填写'}</span></p>
             <P><span>联系电话:</span>${data.phone}</P>
-            <p><span>省份:</span> ${data.province || '未填写'}</p>
-            <p><span>城市:</span> ${data.city || '未填写'}</p>
-            <p><span>区/县</span>${data.district||'未填写'}</p>
+            <p><span>省份:</span> ${provinceName? provinceName.name:data.province || '未填写'}</p>
+            <p><span>城市:</span> ${cityName? cityName.name:data.city|| '未填写'}</p>
+            <p><span>区/县</span>${districtName? districtName.name:data.district||'未填写'}</p>
             <p><span>详细地址:</span> ${data.detail || '未填写'}</p>
             <p><span>邮政编号:</span> ${data.zipCode|| '未填写'}</p>
         `;
@@ -171,6 +177,36 @@ async function loadOrderDetails(){
         DOM.$addressInfo.html('<p><span>加载地址信息失败</span></p>');
     }
 }
+async function loadAddressSelectData() {
+   return new Promise((resolve, reject) => {
+       $.get('/address/pca-code.json',(rawData)=>{
+           if (!rawData || !rawData.length) {
+               alert('地址数据为空，请检查文件！');
+               reject();
+               return;
+           }
+           //1,构建省份映射
+           rawData.forEach(province => {
+               DOM.$provinceMap[province.code] = province;
+
+               // 2. 构建城市映射
+               province.children.forEach(city => {
+                   DOM.$cityMap[city.code] = city;
+
+                   // 3. 构建区县映射
+                   city.children.forEach(district => {
+                       DOM.$districtMap[district.code] = district;
+                   });
+               });
+           });
+
+           resolve(); // 数据加载完成，允许后续操作
+       },'json').fail(() => {
+           alert('加载JSON全国三级地址数据失败，请刷新页面重试');
+           reject();
+       });
+   });
+}
 function  Dateformat(date){
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -180,6 +216,7 @@ function  Dateformat(date){
     return `${year}-${month}-${day} ${hours}:${minutes}`;
 }
 $(document).ready(() => {
+        loadAddressSelectData();
         loadOrderItem();
         loadOrderDetails();
 });
